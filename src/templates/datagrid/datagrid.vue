@@ -167,8 +167,6 @@ const onSelectionChanged = (e) => {
     console.log(selectedRows.value)
 }
 
-const logEvent = (e) => console.log(e)
-
 const onExporting = () => console.log('click')
 </script>
 
