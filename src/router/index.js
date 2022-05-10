@@ -42,6 +42,27 @@ const router = createRouter({
         layout: "main",
         auth: false
       }
+    },
+    {
+      path: '/bigdata',
+      name: 'bigdata',
+
+      component: () => import('@/templates/bigdata/bigdata.vue'),
+      meta: {
+        layout: "main",
+        auth: false
+      }
+    },
+
+    {
+      path: '/test-bigdata',
+      name: 'test-bigdata',
+
+      component: () => import('@/templates/bigdata/test-bigdata.vue'),
+      meta: {
+        layout: "main",
+        auth: false
+      }
     }
   ]
 })

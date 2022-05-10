@@ -16,6 +16,7 @@
         id="gridContainer"
         :data-source="dataSource"
         :allow-column-reordering="false"
+        :allow-column-resizing="true"
         :column-auto-width="true"
         :show-borders="true"
         :showRowLines="true"

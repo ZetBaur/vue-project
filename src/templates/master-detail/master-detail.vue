@@ -12,10 +12,12 @@
     />
 
     <DxDataGrid
+        :data-source="employees"
         :showColumnLines="true"
+        :column-auto-width="true"
+        :allow-column-resizing="true"
         :showRowLines="true"
         :show-borders="true"
-        :data-source="employees"
         key-expr="ID"
         @selection-changed="onSelectionChanged"
         @editing-start="logEvent('EditingStart')"
@@ -57,11 +59,21 @@
             mode="popup"
         />
 
-        <DxColumn :width="70" data-field="Prefix" caption="Title" />
+        <DxColumn data-field="Prefix" caption="Title" />
         <DxColumn data-field="FirstName" />
         <DxColumn data-field="LastName" />
-        <DxColumn :width="170" data-field="Position" />
-        <DxColumn :width="125" data-field="State" />
+        <DxColumn data-field="Position" />
+
+        <!-- ==================== -->
+
+        <DxColumn data-field="State" caption="Штат">
+            <DxLookup :data-source="states" />
+        </DxColumn>
+
+        <!-- ==================== -->
+
+        <!-- <DxColumn :width="125" data-field="State" /> -->
+
         <DxColumn data-field="BirthDate" data-type="date" />
 
         <DxMasterDetail :enabled="true" template="masterDetailTemplate" />
@@ -85,6 +97,7 @@ import {
     DxPager,
     DxFilterRow,
     DxEditing,
+    DxLookup,
     DxExport
 } from 'devextreme-vue/data-grid'
 import DetailTemplate from './detail-template.vue'
@@ -93,6 +106,8 @@ import service from './master-data.js'
 const loading = false
 
 const employees = service.getEmployees()
+
+const states = employees.map((el) => el.State)
 
 const selectedRows = ref([])
 
