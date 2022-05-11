@@ -1,11 +1,12 @@
-import axios from "axios";
+import axios from 'axios'
 // import router from "@/router";
 
 const requestAxios = axios.create({
-  // baseURL: 'https://192.168.191.74:44329'
-  // baseURL: 'https://alashpro.kz:10100/swagger/index.html'
-  // baseURL: 'https://alashpro.kz:10100'
-});
+    headers: {
+        Authorization: `Bearer ${localStorage.Token}`,
+        'Content-Type': 'application/json'
+    }
+})
 
 // ----------------------------------------
 
@@ -19,16 +20,16 @@ const requestAxios = axios.create({
 // ----------------------------------------
 
 requestAxios.interceptors.request.use(
-  config => {
-    if (!config.headers.Authorization) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = token;
-      }
-    }
-    return config;
-  },
-  error => Promise.reject(error)
-);
+    (config) => {
+        if (!config.headers.Authorization) {
+            const token = localStorage.getItem('token')
+            if (token) {
+                config.headers.Authorization = token
+            }
+        }
+        return config
+    },
+    (error) => Promise.reject(error)
+)
 
-export default requestAxios;
+export default requestAxios
