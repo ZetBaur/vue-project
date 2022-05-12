@@ -11,8 +11,6 @@ locale(navigator.language)
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-console.log(import.meta.env.MODE)
-
 import App from './App.vue'
 import router from './router'
 
@@ -22,3 +20,5 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+console.log(import.meta.env)
