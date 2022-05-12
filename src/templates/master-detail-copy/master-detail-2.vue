@@ -108,15 +108,19 @@ const loading = false
 
 // -----------------------------------
 
-console.log(import.meta.env)
-
 onMounted(async () => {
     try {
-        const res = await Axios.get(
-            '/manager-api/v2/campaign/tasks/page&page=2&size=20&sort=id,desc'
+        const { data } = await Axios.get(
+            '/manager-api/v2/campaign/tasks/page',
+            {
+                headers: {
+                    Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTI0MTg3NjUsIm1hbmFnZXJfaWQiOjg3LCJtZXJjaGFudF9pZCI6Miwicm9sZXMiOlsxLDE1XX0.NWlok8y4QDRdgWgYUuDSUQhaaV6pxHc1Lblci42WG046auLpsHWN9juVL88w2HNnrhSU22TXHWL53tqgdFXvR7F9GHqe3wdQoYGYmtQF2CHTLtnd4Q70wUbLicirz6ZdbZPhI7bCkCjvGpAzCnaKfcs1fMJCEqAhYJbBNgHjEhmj5bq4iaqErYNLPNkm3Jw9FrNvoh-QabMWDbKptn1CvEFtDhM0_CdfSYosOGYHxl226noQbsO1F8wcwbjAzHwReTGW8r675LTF_jTl4DmdaWGFc8BGBJuShEzJQfH9DLJLntCSfY03hjARewUESwPIiVvYL93KPPceDrp1JjFguA`,
+                    'Content-Type': 'application/json'
+                }
+            }
         )
 
-        console.log(res)
+        console.log(data)
     } catch (error) {
         console.log(error)
     }

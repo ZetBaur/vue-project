@@ -7,8 +7,6 @@ export default defineConfig(({ command, mode }) => {
     const env = loadEnv(mode, process.cwd(), '')
 
     if (command === 'serve') {
-        console.log(env)
-
         return {
             base: '/',
 
@@ -51,6 +49,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
 
                         rewrite: (path) => path.replace(/^\/manager/, 'manager')
@@ -59,6 +58,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
 
                         rewrite: (path) =>
@@ -68,6 +68,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
 
                         rewrite: (path) =>
@@ -80,6 +81,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
 
                         rewrite: (path) =>
@@ -92,6 +94,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
 
                         rewrite: (path) =>
@@ -101,6 +104,7 @@ export default defineConfig(({ command, mode }) => {
                         // target: "http://172.16.10.215",
                         // target: "http://172.16.11.197",
                         target: 'http://10.70.6.9',
+
                         changeOrigin: true,
                         // pathRewrite: {
                         //     '^/frauds': '/frauds/'
@@ -110,7 +114,6 @@ export default defineConfig(({ command, mode }) => {
                     }
                 }
             }
-            // dev specific config
         }
     } else {
         return {
