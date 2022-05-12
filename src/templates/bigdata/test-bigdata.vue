@@ -7,112 +7,172 @@
     />
 
     <DxDataGrid
-        :data-source="dataSource"
+        :data-source="info"
         :show-borders="true"
         :remote-operations="true"
+        :showColumnLines="true"
+        :column-auto-width="true"
+        :allow-column-resizing="true"
+        :showRowLines="true"
+        @selection-changed="onSelectionChanged"
+        ref="myDataGrid"
     >
-        <DxColumn data-field="total_comments" data-type="string" />
-        <!-- <DxColumn data-field="OrderDate" data-type="date" /> -->
-        <DxColumn data-field="helpful_count" data-type="string" />
-        <DxColumn data-field="product" data-type="string" />
-        <DxColumn data-field="profile_name" data-type="string" />
+        >
+        <DxColumn data-field="id" data-type="number" />
+        <DxColumn data-field="dt_created" data-type="date" />
+        <DxColumn data-field="client_name" data-type="string" />
+        <DxColumn data-field="description" data-type="string" />
+        <DxColumn data-field="status" data-type="string" />
+        <DxColumn data-field="sub_status" data-type="string" />
 
-        <DxPaging :page-size="10" />
+        <!-- ============================== -->
+
+        <DxExport :enabled="true" :allow-export-selected-data="true" />
+
+        <DxFilterRow :visible="true" :show-operation-chooser="false" />
+
+        <DxPaging
+            :page-size="10"
+            v-model:page-size="pageSize"
+            v-model:page-index="pageIndex"
+        />
 
         <DxPager
             :show-page-size-selector="true"
-            :allowed-page-sizes="[5, 10, 'all']"
+            :allowed-page-sizes="[10, 20, 30]"
+            :show-navigation-buttons="true"
+            :show-info="true"
         />
+
+        <DxSelection
+            select-all-mode="allPages"
+            show-check-boxes-mode="always"
+            mode="multiple"
+        />
+
+        <DxColumnChooser :enabled="true" />
     </DxDataGrid>
 </template>
+
 <script setup>
 import Axios from '../../axios/reqAxios'
 import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
 
+import { onMounted, ref } from 'vue'
 import {
     DxDataGrid,
     DxColumn,
     DxPaging,
-    DxPager
+    DxPager,
+    DxSelection,
+    DxFilterRow,
+    DxExport,
+    DxColumnChooser
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
-import { onMounted, ref } from 'vue'
-// import 'whatwg-fetch'
-
 const loading = ref(false)
 
-function isNotEmpty(value) {
-    return value !== undefined && value !== null && value !== ''
+// --------------- data ------------------------
+
+const info = ref(null)
+
+// --------- paging ------------------------
+
+const pageSize = ref(20)
+const pageIndex = ref(0)
+
+console.log(pageIndex.value)
+const myDataGrid = ref(null)
+const changePageSize = (value) => {
+    console.log(value)
+    pageSize.value = value
+}
+const goToLastPage = () => {
+    const pageCount = refs['myDataGrid'].instance.pageCount()
+    pageIndex.value = pageCount - 1
 }
 
-// const dataSource = ref([])
+// --------- paging ------------------------
 
-// onMounted(async () => {
-//     try {
-//         loading.value = true
-//         const { data } = await Axios.get(
-//             'https://www.fakerestapi.com/datasets/api/v1/amazon-echo-reviews.json'
-//         )
+onMounted(async () => {
+    try {
+        loading.value = true
+        const { data } = await Axios.get(
+            'manager-api/v2/contactCenter/requests/page'
+        )
+        info.value = data.content
+        pageSize.value = data.pageSize
+        pageIndex.value = data.page
+        loading.value = false
 
-//         loading.value = false
-
-//         console.log(data)
-
-//         dataSource.value = data
-
-//         console.log(dataSource.value)
-//     } catch (error) {
-//         console.log(error)
-//     }
-// })
-
-const store = new CustomStore({
-    key: 'profile_name',
-    async load(loadOptions) {
-        let params = '?'
-        ;[
-            'skip',
-            'take',
-            'requireTotalCount',
-            'requireGroupCount',
-            'sort',
-            'filter',
-            'totalSummary',
-            'group',
-            'groupSummary'
-        ].forEach((i) => {
-            if (i in loadOptions && isNotEmpty(loadOptions[i])) {
-                params += `${i}=${JSON.stringify(loadOptions[i])}&`
-            }
-        })
-        params = params.slice(0, -1)
-
-        console.log(params)
-
-        try {
-            loading.value = true
-            const { data } = await Axios.get(
-                `https://www.fakerestapi.com/datasets/api/v1/amazon-echo-reviews.json${params}`
-            )
-            loading.value = false
-
-            console.log('data', data)
-
-            const info = {
-                data: data.data,
-                totalCount: data.data.length,
-                summary: data.summary,
-                groupCount: data.groupCount
-            }
-
-            return info
-        } catch (error) {
-            console.log(error)
-        }
+        console.log(data)
+    } catch (error) {
+        loading.value = false
+        console.log(error)
     }
 })
 
-const dataSource = store
+const selectedRows = ref([])
 
-console.log(dataSource)
+const logEvent = (e) => console.log(employees)
+
+const onSelectionChanged = (e) => {
+    selectedRows.value = e.selectedRowKeys
+    console.log('onSelectionChanged', e.selectedRowKeys)
+    console.log(selectedRows.value)
+}
+
+// ----------------------------------------
+
+// function isNotEmpty(value) {
+//     return value !== undefined && value !== null && value !== ''
+// }
+
+// const store = new CustomStore({
+//     key: 'OrderNumber',
+//     async load(loadOptions) {
+//         console.log(loadOptions)
+
+//         let params = '?'
+//         ;[
+//             'skip',
+//             'take',
+//             'requireTotalCount',
+//             'requireGroupCount',
+//             'sort',
+//             'filter',
+//             'totalSummary',
+//             'group',
+//             'groupSummary'
+//         ].forEach((i) => {
+//             if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+//                 params += `${i}=${JSON.stringify(loadOptions[i])}&`
+//             }
+//         })
+//         params = params.slice(0, -1)
+
+//         console.log('params', params)
+
+//         try {
+//             const res = await fetch(
+//                 `https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/orders${params}`
+//             )
+//             let data = await res.json()
+
+//             const info = {
+//                 data: data.data,
+//                 totalCount: data.totalCount,
+//                 summary: data.summary,
+//                 groupCount: data.groupCount
+//             }
+//             console.log('data', data)
+
+//             return info
+//         } catch (error) {
+//             console.log(error)
+//         }
+//     }
+// })
+
+// const dataSource = store
 </script>

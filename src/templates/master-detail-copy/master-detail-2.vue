@@ -12,6 +12,7 @@
     />
 
     <DxDataGrid
+        :remote-operations="true"
         :data-source="employees"
         :showColumnLines="true"
         :column-auto-width="true"
@@ -33,6 +34,25 @@
         @edit-canceling="logEvent('EditCanceling')"
         @edit-canceled="logEvent('EditCanceled')"
     >
+        <DxColumn data-field="Prefix" caption="Title" />
+        <DxColumn data-field="FirstName" />
+        <DxColumn data-field="LastName" />
+        <DxColumn data-field="Position" />
+
+        <DxColumn data-field="State" caption="Штат">
+            <DxLookup :data-source="states" />
+        </DxColumn>
+
+        <DxColumn data-field="BirthDate" data-type="date" />
+
+        <DxMasterDetail :enabled="true" template="masterDetailTemplate" />
+
+        <template #masterDetailTemplate="{ data: employee }">
+            <DetailTemplate :template-data="employee" />
+        </template>
+
+        <!-- ======================================== -->
+
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
         <DxSelection
@@ -58,34 +78,13 @@
             :use-icons="true"
             mode="popup"
         />
-
-        <DxColumn data-field="Prefix" caption="Title" />
-        <DxColumn data-field="FirstName" />
-        <DxColumn data-field="LastName" />
-        <DxColumn data-field="Position" />
-
-        <!-- ==================== -->
-
-        <DxColumn data-field="State" caption="Штат">
-            <DxLookup :data-source="states" />
-        </DxColumn>
-
-        <!-- ==================== -->
-
-        <!-- <DxColumn :width="125" data-field="State" /> -->
-
-        <DxColumn data-field="BirthDate" data-type="date" />
-
-        <DxMasterDetail :enabled="true" template="masterDetailTemplate" />
-
-        <template #masterDetailTemplate="{ data: employee }">
-            <DetailTemplate :template-data="employee" />
-        </template>
     </DxDataGrid>
 </template>
 
 <script setup>
 import Axios from '@/axios/reqAxios.js'
+import CustomStore from 'devextreme/data/custom_store'
+
 import { onMounted, ref } from 'vue'
 import { DxButton } from 'devextreme-vue/button'
 import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
@@ -111,13 +110,69 @@ const loading = ref(false)
 onMounted(async () => {
     try {
         loading.value = true
-        const { data } = await Axios.get('/manager-api/v2/campaign/tasks/page')
+        const { data } = await Axios.get('manager-api/v2/campaign/tasks/page')
         loading.value = false
         console.log(data)
     } catch (error) {
         console.log(error)
     }
 })
+
+// -----------------------------------------
+
+function isNotEmpty(value) {
+    return value !== undefined && value !== null && value !== ''
+}
+
+const store = new CustomStore({
+    key: 'OrderNumber',
+    async load(loadOptions) {
+        let params = '?'
+        ;[
+            'skip',
+            'take',
+            'requireTotalCount',
+            'requireGroupCount',
+            'sort',
+            'filter',
+            'totalSummary',
+            'group',
+            'groupSummary'
+        ].forEach((i) => {
+            if (i in loadOptions && isNotEmpty(loadOptions[i])) {
+                params += `${i}=${JSON.stringify(loadOptions[i])}&`
+            }
+        })
+        params = params.slice(0, -1)
+
+        console.log(params)
+
+        try {
+            loading.value = true
+            const { data } = await Axios.get(
+                `https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/orders${params}`
+            )
+            loading.value = false
+
+            console.log('data', data)
+
+            const info = {
+                data: data.data,
+                totalCount: data.data.length,
+                summary: data.summary,
+                groupCount: data.groupCount
+            }
+
+            return info
+        } catch (error) {
+            console.log(error)
+        }
+    }
+})
+
+const dataSource = store
+
+console.log('store', store)
 
 // -----------------------------------
 

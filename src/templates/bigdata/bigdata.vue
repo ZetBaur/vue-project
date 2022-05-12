@@ -3,7 +3,14 @@
         :data-source="dataSource"
         :show-borders="true"
         :remote-operations="true"
+        :showColumnLines="true"
+        :column-auto-width="true"
+        :allow-column-resizing="true"
+        :showRowLines="true"
+        @selection-changed="onSelectionChanged"
+        ref="myDataGrid"
     >
+        >
         <DxColumn data-field="OrderNumber" data-type="number" />
         <DxColumn data-field="OrderDate" data-type="date" />
         <DxColumn data-field="StoreCity" data-type="string" />
@@ -14,24 +21,74 @@
             data-type="number"
             format="currency"
         />
-        <DxPaging :page-size="12" />
+
+        <!-- ============================== -->
+        <!-- <DxEditing
+            :allow-updating="true"
+            :allow-adding="true">
+        /> -->
+
+        <DxExport :enabled="true" :allow-export-selected-data="true" />
+
+        <DxFilterRow :visible="true" />
+
+        <DxPaging
+            :page-size="10"
+            v-model:page-size="pageSize"
+            v-model:page-index="pageIndex"
+        />
+
         <DxPager
             :show-page-size-selector="true"
-            :allowed-page-sizes="[8, 12, 20]"
+            :allowed-page-sizes="[10, 20, 30]"
+            :show-navigation-buttons="true"
+            :show-info="true"
         />
+
+        <DxSelection
+            select-all-mode="allPages"
+            show-check-boxes-mode="always"
+            mode="multiple"
+        />
+
+        <DxColumnChooser :enabled="true" />
     </DxDataGrid>
 </template>
+
 <script setup>
 import Axios from '../../axios/reqAxios'
-
+import { ref } from 'vue'
 import {
     DxDataGrid,
     DxColumn,
     DxPaging,
-    DxPager
+    DxPager,
+    DxSelection,
+    DxFilterRow,
+    DxExport,
+    DxColumnChooser
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
-// import 'whatwg-fetch'
+
+// --------- paging ------------------------
+
+const myDataGrid = ref(null)
+
+const pageSize = ref(20)
+const pageIndex = ref(0)
+
+const changePageSize = (value) => {
+    console.log(value)
+
+    pageSize.value = value
+}
+
+const goToLastPage = () => {
+    const pageCount = refs['myDataGrid'].instance.pageCount()
+    pageIndex.value = pageCount - 1
+}
+
+// --------- paging ------------------------
 
 function isNotEmpty(value) {
     return value !== undefined && value !== null && value !== ''
@@ -40,6 +97,8 @@ function isNotEmpty(value) {
 const store = new CustomStore({
     key: 'OrderNumber',
     async load(loadOptions) {
+        console.log(loadOptions)
+
         let params = '?'
         ;[
             'skip',
@@ -80,6 +139,16 @@ const store = new CustomStore({
         }
     }
 })
+
+const selectedRows = ref([])
+
+const logEvent = (e) => console.log(employees)
+
+const onSelectionChanged = (e) => {
+    selectedRows.value = e.selectedRowKeys
+    console.log('onSelectionChanged', e.selectedRowKeys)
+    console.log(selectedRows.value)
+}
 
 // const store = new CustomStore({
 //     key: 'OrderNumber',
