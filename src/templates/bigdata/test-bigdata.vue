@@ -32,16 +32,19 @@
         <DxFilterRow :visible="true" :show-operation-chooser="false" />
 
         <DxPaging
+            :enabled="true"
             :page-size="10"
             v-model:page-size="pageSize"
             v-model:page-index="pageIndex"
         />
 
         <DxPager
+            :visible="true"
             :show-page-size-selector="true"
             :allowed-page-sizes="[10, 20, 30]"
             :show-navigation-buttons="true"
             :show-info="true"
+            display-mode="full"
         />
 
         <DxSelection
@@ -72,8 +75,6 @@ import {
 import CustomStore from 'devextreme/data/custom_store'
 const loading = ref(false)
 
-// --------------- data ------------------------
-
 const info = ref(null)
 
 // --------- paging ------------------------
@@ -81,20 +82,22 @@ const info = ref(null)
 const pageSize = ref(20)
 const pageIndex = ref(0)
 
-console.log(pageIndex.value)
 const myDataGrid = ref(null)
+
 const changePageSize = (value) => {
     console.log(value)
     pageSize.value = value
 }
 const goToLastPage = () => {
-    const pageCount = refs['myDataGrid'].instance.pageCount()
+    const pageCount = myDataGrid.value.instance.pageCount()
     pageIndex.value = pageCount - 1
 }
 
 // --------- paging ------------------------
 
 onMounted(async () => {
+    console.log(myDataGrid.value.instance)
+
     try {
         loading.value = true
         const { data } = await Axios.get(
