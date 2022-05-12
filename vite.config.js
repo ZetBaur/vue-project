@@ -19,7 +19,7 @@ export default defineConfig(({ command, mode }) => {
             },
 
             server: {
-                port: 90,
+                port: 3000,
 
                 proxy: {
                     '/storage': {

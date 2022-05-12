@@ -7,7 +7,8 @@
     />
 
     <DxDataGrid
-        :data-source="info"
+        @option-changed="handlePropertyChange"
+        :data-source="dataSource"
         :show-borders="true"
         :remote-operations="true"
         :showColumnLines="true"
@@ -16,6 +17,16 @@
         :showRowLines="true"
         @selection-changed="onSelectionChanged"
         ref="myDataGrid"
+        @editing-start="logEvent('EditingStart')"
+        @init-new-row="logEvent('InitNewRow')"
+        @row-inserting="logEvent('RowInserting')"
+        @row-inserted="logEvent('RowInserted')"
+        @row-updating="logEvent('RowUpdating')"
+        @row-updated="logEvent('RowUpdated')"
+        @row-removing="logEvent('RowRemoving')"
+        @row-removed="logEvent('RowRemoved')"
+        @saving="logEvent('Saving')"
+        @saved="logEvent('Saved')"
     >
         >
         <DxColumn data-field="id" data-type="number" />
@@ -33,7 +44,6 @@
 
         <DxPaging
             :enabled="true"
-            :page-size="10"
             v-model:page-size="pageSize"
             v-model:page-index="pageIndex"
         />
@@ -72,43 +82,41 @@ import {
     DxExport,
     DxColumnChooser
 } from 'devextreme-vue/data-grid'
-import CustomStore from 'devextreme/data/custom_store'
 const loading = ref(false)
 
-const info = ref(null)
+const dataSource = ref(null)
 
 // --------- paging ------------------------
 
-const pageSize = ref(20)
+const pageSize = ref(10)
 const pageIndex = ref(0)
 
-const myDataGrid = ref(null)
-
-const changePageSize = (value) => {
-    console.log(value)
-    pageSize.value = value
-}
-const goToLastPage = () => {
-    const pageCount = myDataGrid.value.instance.pageCount()
-    pageIndex.value = pageCount - 1
-}
-
 // --------- paging ------------------------
 
-onMounted(async () => {
-    console.log(myDataGrid.value.instance)
+const handlePropertyChange = function (e) {
+    // console.log('handlePropertyChange', e)
+    if (e.fullName === 'paging.pageSize') {
+        pageSize.value = e.value
+        console.log(pageSize.value)
+    }
+    if (e.fullName === 'paging.pageIndex') {
+        pageIndex.value = e.value
+        console.log(pageIndex.value)
+    }
+}
 
+onMounted(async () => {
     try {
         loading.value = true
         const { data } = await Axios.get(
             'manager-api/v2/contactCenter/requests/page'
         )
-        info.value = data.content
+        dataSource.value = data.content
         pageSize.value = data.pageSize
         pageIndex.value = data.page
         loading.value = false
 
-        console.log(data)
+        // console.log(data)
     } catch (error) {
         loading.value = false
         console.log(error)
@@ -117,65 +125,14 @@ onMounted(async () => {
 
 const selectedRows = ref([])
 
-const logEvent = (e) => console.log(employees)
-
 const onSelectionChanged = (e) => {
+    // console.log('onSelectionChanged', e)
     selectedRows.value = e.selectedRowKeys
-    console.log('onSelectionChanged', e.selectedRowKeys)
-    console.log(selectedRows.value)
+    // console.log('onSelectionChanged', e.selectedRowKeys)
+    // console.log(selectedRows.value)
 }
 
-// ----------------------------------------
-
-// function isNotEmpty(value) {
-//     return value !== undefined && value !== null && value !== ''
-// }
-
-// const store = new CustomStore({
-//     key: 'OrderNumber',
-//     async load(loadOptions) {
-//         console.log(loadOptions)
-
-//         let params = '?'
-//         ;[
-//             'skip',
-//             'take',
-//             'requireTotalCount',
-//             'requireGroupCount',
-//             'sort',
-//             'filter',
-//             'totalSummary',
-//             'group',
-//             'groupSummary'
-//         ].forEach((i) => {
-//             if (i in loadOptions && isNotEmpty(loadOptions[i])) {
-//                 params += `${i}=${JSON.stringify(loadOptions[i])}&`
-//             }
-//         })
-//         params = params.slice(0, -1)
-
-//         console.log('params', params)
-
-//         try {
-//             const res = await fetch(
-//                 `https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/orders${params}`
-//             )
-//             let data = await res.json()
-
-//             const info = {
-//                 data: data.data,
-//                 totalCount: data.totalCount,
-//                 summary: data.summary,
-//                 groupCount: data.groupCount
-//             }
-//             console.log('data', data)
-
-//             return info
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
-// })
-
-// const dataSource = store
+const logEvent = (eventName) => {
+    console.log('eventName', eventName)
+}
 </script>
