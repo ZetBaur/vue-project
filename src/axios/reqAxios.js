@@ -3,9 +3,13 @@ import axios from 'axios'
 
 const requestAxios = axios.create({
     headers: {
-        Authorization: `Bearer ${localStorage.Token}`,
+        Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTI0MTg3NjUsIm1hbmFnZXJfaWQiOjg3LCJtZXJjaGFudF9pZCI6Miwicm9sZXMiOlsxLDE1XX0.NWlok8y4QDRdgWgYUuDSUQhaaV6pxHc1Lblci42WG046auLpsHWN9juVL88w2HNnrhSU22TXHWL53tqgdFXvR7F9GHqe3wdQoYGYmtQF2CHTLtnd4Q70wUbLicirz6ZdbZPhI7bCkCjvGpAzCnaKfcs1fMJCEqAhYJbBNgHjEhmj5bq4iaqErYNLPNkm3Jw9FrNvoh-QabMWDbKptn1CvEFtDhM0_CdfSYosOGYHxl226noQbsO1F8wcwbjAzHwReTGW8r675LTF_jTl4DmdaWGFc8BGBJuShEzJQfH9DLJLntCSfY03hjARewUESwPIiVvYL93KPPceDrp1JjFguA`,
         'Content-Type': 'application/json'
     }
+    // headers: {
+    //     Authorization: `Bearer ${localStorage.Token}`,
+    //     'Content-Type': 'application/json'
+    // }
 })
 
 // ----------------------------------------

@@ -104,22 +104,15 @@ import {
 import DetailTemplate from './detail-template.vue'
 import service from './master-data.js'
 
-const loading = false
+const loading = ref(false)
 
 // -----------------------------------
 
 onMounted(async () => {
     try {
-        const { data } = await Axios.get(
-            '/manager-api/v2/campaign/tasks/page',
-            {
-                headers: {
-                    Authorization: `Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NTI0MTg3NjUsIm1hbmFnZXJfaWQiOjg3LCJtZXJjaGFudF9pZCI6Miwicm9sZXMiOlsxLDE1XX0.NWlok8y4QDRdgWgYUuDSUQhaaV6pxHc1Lblci42WG046auLpsHWN9juVL88w2HNnrhSU22TXHWL53tqgdFXvR7F9GHqe3wdQoYGYmtQF2CHTLtnd4Q70wUbLicirz6ZdbZPhI7bCkCjvGpAzCnaKfcs1fMJCEqAhYJbBNgHjEhmj5bq4iaqErYNLPNkm3Jw9FrNvoh-QabMWDbKptn1CvEFtDhM0_CdfSYosOGYHxl226noQbsO1F8wcwbjAzHwReTGW8r675LTF_jTl4DmdaWGFc8BGBJuShEzJQfH9DLJLntCSfY03hjARewUESwPIiVvYL93KPPceDrp1JjFguA`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        )
-
+        loading.value = true
+        const { data } = await Axios.get('/manager-api/v2/campaign/tasks/page')
+        loading.value = false
         console.log(data)
     } catch (error) {
         console.log(error)
