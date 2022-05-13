@@ -3,14 +3,26 @@
 }
 
 .actions-header {
-    display: flex;
     margin-bottom: 16px;
 
+    .actions-filter{
+        display: flex;
+        flex-wrap: wrap;
+        margin-bottom: 16px;
+    }
+
+    .actions-buttons{
+        display: flex;
+        flex-wrap: wrap;
+    }
+
     & .dx-field {
-        width: 250px;
+        width: 200px;
         margin-right: 16px;
     }
-    .dx-button {
+
+    & .dx-button {
+        width: 200px;
         margin-right: 16px;
     }
 }

@@ -1,18 +1,83 @@
 <template>
     <div class="actions-header">
-        <div class="dx-field">
-            <DxTextBox
-                label-mode="floating"
-                label="Номер карты"
-                :show-clear-button="true"
-            />
+        <div class="actions-filter">
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="Тип обращения"
+                    :show-clear-button="true"
+                    v-model="cardInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="Статус"
+                    :show-clear-button="true"
+                    v-model="cardInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="Филиал"
+                    :show-clear-button="true"
+                    v-model="cardInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="Город"
+                    :show-clear-button="true"
+                    v-model="cardInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="ID"
+                    :show-clear-button="true"
+                    v-model="cardInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxTextBox
+                    label-mode="floating"
+                    label="Номер телефона"
+                    :mask-rules="{ X: /[02-9]/ }"
+                    mask="+7 (000) 000-0000"
+                    v-model="phoneInput"
+                />
+            </div>
+
+            <div class="dx-field">
+                <DxDateBox
+                    value="new Date()"
+                    :show-clear-button="true"
+                    picker-type="rollers"
+                    label-mode="floating"
+                    label="Дата"
+                    v-model="dateInput"
+                />
+            </div>
         </div>
 
-        <div class="dx-field">
-            <DxTextBox
-                label-mode="floating"
-                label="Номер карты"
-                :show-clear-button="true"
+        <div class="actions-buttons">
+            <DxButton
+                type="danger"
+                :disabled="!selectedRows.length"
+                text="Удалить запись"
+            />
+            <DxButton
+                type="success"
+                :disabled="!selectedRows.length"
+                text="Смена ответственных"
             />
         </div>
     </div>
@@ -27,30 +92,17 @@
         @selection-changed="onSelectionChanged"
         @option-changed="handlePropertyChange"
     >
-        >
-
         <DxColumn data-field="id" data-type="number" />
-
-        <DxColumn
-            data-field="conditions_ml.ru"
-            data-type="string"
-            width="250"
-        />
+        <DxColumn data-field="actor_id" data-type="number" />
+        <DxColumn data-field="category_id" data-type="number" />
+        <DxColumn data-field="client" data-type="string" />
+        <DxColumn data-field="client_city_id" data-type="number" />
+        <DxColumn data-field="client_name" data-type="string" />
         <DxColumn data-field="dt_created" data-type="date" />
-
-        <DxColumn
-            data-field="description_ml.ru"
-            data-type="string"
-            width="250"
-        />
-
-        <DxColumn data-field="title_ml.ru" data-type="string" />
-
-        <DxColumn
-            data-field="short_description_ml.ru"
-            data-type="string"
-            width="250"
-        />
+        <DxColumn data-field="dt_updated" data-type="date" />
+        <DxColumn data-field="client_phone" data-type="string" />
+        <DxColumn data-field="description" data-type="string" />
+        <DxColumn data-field="status" data-type="string" />
 
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
@@ -73,14 +125,19 @@
 
         <DxSorting mode="none" />
 
-        <DxSearchPanel :visible="true" :highlight-case-sensitive="true" />
+        <DxToolbar>
+            <DxItem location="before" name="exportButton" />
+            <DxItem location="before" name="columnChooserButton" />
+        </DxToolbar>
     </DxDataGrid>
 </template>
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
+import DxDateBox from 'devextreme-vue/date-box'
+import { DxButton } from 'devextreme-vue/button'
 
 import {
     DxDataGrid,
@@ -88,22 +145,24 @@ import {
     DxPaging,
     DxPager,
     DxSelection,
-    DxFilterRow,
     DxExport,
     DxColumnChooser,
     DxSorting,
-    DxSearchPanel
+    DxToolbar,
+    DxItem
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
 let pageSize = ref(30)
 let pageIndex = ref(0)
 
-const handlePropertyChange = (e) => {
-    // console.log('handlePropertyChange', e)
-}
-
 const dataSource = ref(null)
+
+// --- filter ---------
+
+const cardInput = ref(null)
+const phoneInput = ref(null)
+const dateInput = ref(null)
 
 const store = new CustomStore({
     key: 'id',
@@ -119,7 +178,7 @@ const store = new CustomStore({
 
         try {
             const { data } = await Axios.get(
-                'manager-api/v2/campaign/campaigns/page',
+                'manager-api/v2/contactCenter/requests/page',
                 {
                     params: params
                 }
@@ -151,4 +210,7 @@ const onSelectionChanged = (e) => {
     console.log(selectedRows.value)
 }
 const logEvent = (e) => console.log(employees)
+const handlePropertyChange = (e) => {
+    // console.log('handlePropertyChange', e)
+}
 </script>

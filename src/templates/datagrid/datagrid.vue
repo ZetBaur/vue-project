@@ -39,7 +39,6 @@
         @selection-changed="onSelectionChanged"
         @exporting="onExporting"
     >
-        >
         <DxStateStoring
             :enabled="true"
             type="localStorage"
