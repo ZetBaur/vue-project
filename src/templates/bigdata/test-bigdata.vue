@@ -47,7 +47,7 @@
         />
 
         <DxSelection
-            select-all-mode="allPages"
+            select-all-mode="page"
             show-check-boxes-mode="always"
             mode="multiple"
         />
