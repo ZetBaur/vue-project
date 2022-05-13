@@ -10,7 +10,6 @@
         @selection-changed="onSelectionChanged"
     >
         >
-        <!-- ------------------------------------------ -->
 
         <DxColumn data-field="id" data-type="number" />
 
@@ -28,34 +27,16 @@
         />
 
         <DxColumn data-field="title_ml.ru" data-type="string" />
+
         <DxColumn
             data-field="short_description_ml.ru"
             data-type="string"
             width="250"
         />
 
-        <!-- ------------------------------------------ -->
-
-        <!-- <DxColumn data-field="OrderNumber" data-type="number" />
-        <DxColumn data-field="OrderDate" data-type="date" />
-        <DxColumn data-field="StoreCity" data-type="string" />
-        <DxColumn data-field="StoreState" data-type="string" />
-        <DxColumn data-field="Employee" data-type="string" />
-        <DxColumn
-            data-field="SaleAmount"
-            data-type="number"
-            format="currency"
-        /> -->
-
-        <!-- ============================== -->
-        <!-- <DxEditing
-            :allow-updating="true"
-            :allow-adding="true">
-        /> -->
-
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
-        <DxFilterRow :visible="true" />
+        <!-- <DxFilterRow :visible="true" /> -->
 
         <DxPaging
             :page-size="10"
@@ -77,6 +58,8 @@
         />
 
         <DxColumnChooser :enabled="true" />
+
+        <DxSorting mode="none" />
     </DxDataGrid>
 </template>
 
@@ -91,18 +74,15 @@ import {
     DxSelection,
     DxFilterRow,
     DxExport,
-    DxColumnChooser
+    DxColumnChooser,
+    DxSorting
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
-
-// --------- paging ------------------------
 
 const pageSize = ref(10)
 const pageIndex = ref(0)
 
 const changePageSize = (value) => {
-    console.log(value)
-
     pageSize.value = value
 }
 
@@ -111,15 +91,13 @@ const goToLastPage = () => {
     pageIndex.value = pageCount - 1
 }
 
-// ===================
-
 function isNotEmpty(value) {
     return value !== undefined && value !== null && value !== ''
 }
 
 const store = new CustomStore({
     key: 'id',
-    async load(loadOptions) {
+    async load() {
         let params = {
             page: pageIndex.value + 1,
             size: pageSize.value,
@@ -139,33 +117,14 @@ const store = new CustomStore({
 
             console.log('rrrrr', r.data)
 
-            const info2 = {
+            const info = {
                 data: r.data.content,
                 totalCount: r.data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             }
 
-            // ---------------------------------
-
-            // const res = await fetch(
-            //     `https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/orders${params}`
-            // )
-
-            // let data = await res.json()
-
-            // const info = {
-            //     data: data.data,
-            //     totalCount: data.totalCount,
-            //     summary: data.summary,
-            //     groupCount: data.groupCount
-            // }
-
-            // // console.log('info', info)
-
-            // // console.log('data', data)
-
-            return info2
+            return info
         } catch (error) {
             console.log(error)
         }
@@ -176,11 +135,10 @@ const dataSource = store
 
 const selectedRows = ref([])
 
-const logEvent = (e) => console.log(employees)
-
 const onSelectionChanged = (e) => {
     selectedRows.value = e.selectedRowKeys
     console.log('onSelectionChanged', e.selectedRowKeys)
     console.log(selectedRows.value)
 }
+const logEvent = (e) => console.log(employees)
 </script>
