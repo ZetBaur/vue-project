@@ -1,4 +1,21 @@
 <template>
+    <div class="actions-header">
+        <div class="dx-field">
+            <DxTextBox
+                label-mode="floating"
+                label="Номер карты"
+                :show-clear-button="true"
+            />
+        </div>
+
+        <div class="dx-field">
+            <DxTextBox
+                label-mode="floating"
+                label="Номер карты"
+                :show-clear-button="true"
+            />
+        </div>
+    </div>
     <DxDataGrid
         :data-source="dataSource"
         :show-borders="true"
@@ -55,12 +72,16 @@
         <DxColumnChooser :enabled="true" />
 
         <DxSorting mode="none" />
+
+        <DxSearchPanel :visible="true" :highlight-case-sensitive="true" />
     </DxDataGrid>
 </template>
 
 <script setup>
 import Axios from '../../axios/reqAxios'
 import { onMounted, ref } from 'vue'
+import DxTextBox from 'devextreme-vue/text-box'
+
 import {
     DxDataGrid,
     DxColumn,
@@ -70,7 +91,8 @@ import {
     DxFilterRow,
     DxExport,
     DxColumnChooser,
-    DxSorting
+    DxSorting,
+    DxSearchPanel
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
@@ -80,19 +102,6 @@ let pageIndex = ref(0)
 const handlePropertyChange = (e) => {
     // console.log('handlePropertyChange', e)
 }
-
-// const changePageSize = (value) => {
-//     pageSize.value = value
-// }
-
-// const goToLastPage = () => {
-//     const pageCount = refs['myDataGrid'].instance.pageCount()
-//     pageIndex.value = pageCount - 1
-// }
-
-// function isNotEmpty(value) {
-//     return value !== undefined && value !== null && value !== ''
-// }
 
 const dataSource = ref(null)
 
@@ -106,7 +115,7 @@ const store = new CustomStore({
             date: new Date()
         }
 
-        // console.log('params', params)
+        console.log('params', params)
 
         try {
             const { data } = await Axios.get(
@@ -116,7 +125,7 @@ const store = new CustomStore({
                 }
             )
 
-            console.log('rrrrr', data)
+            console.log('data', data)
 
             const info = {
                 data: data.content,

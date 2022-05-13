@@ -1,11 +1,16 @@
 :root {
-  --color-one: lightgray;
+    --color-one: lightgray;
 }
 
-.actions-header{
-  .dx-button{
-    margin-right: 16px;
-  }
+.actions-header {
+    display: flex;
+    margin-bottom: 16px;
+
+    & .dx-field {
+        width: 250px;
+        margin-right: 16px;
+    }
+    .dx-button {
+        margin-right: 16px;
+    }
 }
-
-
