@@ -8,6 +8,7 @@
         :allow-column-resizing="true"
         :showRowLines="true"
         @selection-changed="onSelectionChanged"
+        @option-changed="handlePropertyChange"
     >
         >
 
@@ -36,13 +37,7 @@
 
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
-        <!-- <DxFilterRow :visible="true" /> -->
-
-        <DxPaging
-            :page-size="10"
-            v-model:page-size="pageSize"
-            v-model:page-index="pageIndex"
-        />
+        <DxPaging v-model:page-size="pageSize" v-model:page-index="pageIndex" />
 
         <DxPager
             :show-page-size-selector="true"
@@ -79,21 +74,27 @@ import {
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
-const pageSize = ref(10)
-const pageIndex = ref(0)
+let pageSize = ref(30)
+let pageIndex = ref(0)
 
-const changePageSize = (value) => {
-    pageSize.value = value
+const handlePropertyChange = (e) => {
+    // console.log('handlePropertyChange', e)
 }
 
-const goToLastPage = () => {
-    const pageCount = refs['myDataGrid'].instance.pageCount()
-    pageIndex.value = pageCount - 1
-}
+// const changePageSize = (value) => {
+//     pageSize.value = value
+// }
 
-function isNotEmpty(value) {
-    return value !== undefined && value !== null && value !== ''
-}
+// const goToLastPage = () => {
+//     const pageCount = refs['myDataGrid'].instance.pageCount()
+//     pageIndex.value = pageCount - 1
+// }
+
+// function isNotEmpty(value) {
+//     return value !== undefined && value !== null && value !== ''
+// }
+
+const dataSource = ref(null)
 
 const store = new CustomStore({
     key: 'id',
@@ -105,21 +106,21 @@ const store = new CustomStore({
             date: new Date()
         }
 
-        console.log('params', params)
+        // console.log('params', params)
 
         try {
-            const r = await Axios.get(
+            const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
                     params: params
                 }
             )
 
-            console.log('rrrrr', r.data)
+            console.log('rrrrr', data)
 
             const info = {
-                data: r.data.content,
-                totalCount: r.data.totalElements
+                data: data.content,
+                totalCount: data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             }
@@ -131,7 +132,7 @@ const store = new CustomStore({
     }
 })
 
-const dataSource = store
+dataSource.value = store
 
 const selectedRows = ref([])
 

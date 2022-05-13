@@ -75,6 +75,17 @@ const router = createRouter({
                 layout: 'main',
                 auth: false
             }
+        },
+        {
+            path: '/test-bigdata-client',
+            name: 'test-bigdata-client',
+
+            component: () =>
+                import('@/templates/bigdata/test-bigdata-client.vue'),
+            meta: {
+                layout: 'main',
+                auth: false
+            }
         }
     ]
 })
