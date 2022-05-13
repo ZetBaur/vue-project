@@ -163,6 +163,8 @@ const store = new CustomStore({
                 groupCount: data.groupCount
             }
 
+            console.log(info)
+
             return info
         } catch (error) {
             console.log(error)

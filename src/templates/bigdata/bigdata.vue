@@ -97,8 +97,6 @@ function isNotEmpty(value) {
 const store = new CustomStore({
     key: 'OrderNumber',
     async load(loadOptions) {
-        console.log(loadOptions)
-
         let params = '?'
         ;[
             'skip',
@@ -109,13 +107,16 @@ const store = new CustomStore({
             'filter',
             'totalSummary',
             'group',
-            'groupSummary'
+            'groupSummary',
+            'page'
         ].forEach((i) => {
             if (i in loadOptions && isNotEmpty(loadOptions[i])) {
                 params += `${i}=${JSON.stringify(loadOptions[i])}&`
             }
         })
         params = params.slice(0, -1)
+
+        console.log('loadOptions', loadOptions)
 
         console.log('params', params)
 
@@ -131,6 +132,9 @@ const store = new CustomStore({
                 summary: data.summary,
                 groupCount: data.groupCount
             }
+
+            console.log('info', info)
+
             console.log('data', data)
 
             return info
@@ -139,6 +143,8 @@ const store = new CustomStore({
         }
     }
 })
+
+const dataSource = store
 
 const selectedRows = ref([])
 
@@ -191,6 +197,4 @@ const onSelectionChanged = (e) => {
 //         }
 //     }
 // })
-
-const dataSource = store
 </script>

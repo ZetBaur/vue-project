@@ -1,13 +1,5 @@
 <template>
-    <DxLoadIndicator
-        v-if="loading"
-        id="large-indicator"
-        :height="60"
-        :width="60"
-    />
-
     <DxDataGrid
-        @option-changed="handlePropertyChange"
         :data-source="dataSource"
         :show-borders="true"
         :remote-operations="true"
@@ -16,45 +8,66 @@
         :allow-column-resizing="true"
         :showRowLines="true"
         @selection-changed="onSelectionChanged"
-        ref="myDataGrid"
-        @editing-start="logEvent('EditingStart')"
-        @init-new-row="logEvent('InitNewRow')"
-        @row-inserting="logEvent('RowInserting')"
-        @row-inserted="logEvent('RowInserted')"
-        @row-updating="logEvent('RowUpdating')"
-        @row-updated="logEvent('RowUpdated')"
-        @row-removing="logEvent('RowRemoving')"
-        @row-removed="logEvent('RowRemoved')"
-        @saving="logEvent('Saving')"
-        @saved="logEvent('Saved')"
     >
         >
+        <!-- ------------------------------------------ -->
+
         <DxColumn data-field="id" data-type="number" />
+
+        <DxColumn
+            data-field="conditions_ml.ru"
+            data-type="string"
+            width="250"
+        />
         <DxColumn data-field="dt_created" data-type="date" />
-        <DxColumn data-field="client_name" data-type="string" />
-        <DxColumn data-field="description" data-type="string" />
-        <DxColumn data-field="status" data-type="string" />
-        <DxColumn data-field="sub_status" data-type="string" />
+
+        <DxColumn
+            data-field="description_ml.ru"
+            data-type="string"
+            width="250"
+        />
+
+        <DxColumn data-field="title_ml.ru" data-type="string" />
+        <DxColumn
+            data-field="short_description_ml.ru"
+            data-type="string"
+            width="250"
+        />
+
+        <!-- ------------------------------------------ -->
+
+        <!-- <DxColumn data-field="OrderNumber" data-type="number" />
+        <DxColumn data-field="OrderDate" data-type="date" />
+        <DxColumn data-field="StoreCity" data-type="string" />
+        <DxColumn data-field="StoreState" data-type="string" />
+        <DxColumn data-field="Employee" data-type="string" />
+        <DxColumn
+            data-field="SaleAmount"
+            data-type="number"
+            format="currency"
+        /> -->
 
         <!-- ============================== -->
+        <!-- <DxEditing
+            :allow-updating="true"
+            :allow-adding="true">
+        /> -->
 
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
-        <DxFilterRow :visible="true" :show-operation-chooser="false" />
+        <DxFilterRow :visible="true" />
 
         <DxPaging
-            :enabled="true"
+            :page-size="10"
             v-model:page-size="pageSize"
             v-model:page-index="pageIndex"
         />
 
         <DxPager
-            :visible="true"
             :show-page-size-selector="true"
             :allowed-page-sizes="[10, 20, 30]"
             :show-navigation-buttons="true"
             :show-info="true"
-            display-mode="full"
         />
 
         <DxSelection
@@ -69,8 +82,6 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
-
 import { onMounted, ref } from 'vue'
 import {
     DxDataGrid,
@@ -82,57 +93,94 @@ import {
     DxExport,
     DxColumnChooser
 } from 'devextreme-vue/data-grid'
-const loading = ref(false)
-
-const dataSource = ref(null)
+import CustomStore from 'devextreme/data/custom_store'
 
 // --------- paging ------------------------
 
 const pageSize = ref(10)
 const pageIndex = ref(0)
 
-// --------- paging ------------------------
+const changePageSize = (value) => {
+    console.log(value)
 
-const handlePropertyChange = function (e) {
-    // console.log('handlePropertyChange', e)
-    if (e.fullName === 'paging.pageSize') {
-        pageSize.value = e.value
-        console.log(pageSize.value)
-    }
-    if (e.fullName === 'paging.pageIndex') {
-        pageIndex.value = e.value
-        console.log(pageIndex.value)
-    }
+    pageSize.value = value
 }
 
-onMounted(async () => {
-    try {
-        loading.value = true
-        const { data } = await Axios.get(
-            'manager-api/v2/contactCenter/requests/page'
-        )
-        dataSource.value = data.content
-        pageSize.value = data.pageSize
-        pageIndex.value = data.page
-        loading.value = false
+const goToLastPage = () => {
+    const pageCount = refs['myDataGrid'].instance.pageCount()
+    pageIndex.value = pageCount - 1
+}
 
-        // console.log(data)
-    } catch (error) {
-        loading.value = false
-        console.log(error)
+// ===================
+
+function isNotEmpty(value) {
+    return value !== undefined && value !== null && value !== ''
+}
+
+const store = new CustomStore({
+    key: 'id',
+    async load(loadOptions) {
+        let params = {
+            page: pageIndex.value + 1,
+            size: pageSize.value,
+            sort: 'id,desc',
+            date: new Date()
+        }
+
+        console.log('params', params)
+
+        try {
+            const r = await Axios.get(
+                'manager-api/v2/campaign/campaigns/page',
+                {
+                    params: params
+                }
+            )
+
+            console.log('rrrrr', r.data)
+
+            const info2 = {
+                data: r.data.content,
+                totalCount: r.data.totalElements
+                // summary: r.data.summary,
+                // groupCount: r.data.groupCount
+            }
+
+            // ---------------------------------
+
+            // const res = await fetch(
+            //     `https://js.devexpress.com/Demos/WidgetsGalleryDataService/api/orders${params}`
+            // )
+
+            // let data = await res.json()
+
+            // const info = {
+            //     data: data.data,
+            //     totalCount: data.totalCount,
+            //     summary: data.summary,
+            //     groupCount: data.groupCount
+            // }
+
+            // // console.log('info', info)
+
+            // // console.log('data', data)
+
+            return info2
+        } catch (error) {
+            console.log(error)
+        }
     }
 })
 
+const dataSource = store
+
 const selectedRows = ref([])
 
-const onSelectionChanged = (e) => {
-    // console.log('onSelectionChanged', e)
-    selectedRows.value = e.selectedRowKeys
-    // console.log('onSelectionChanged', e.selectedRowKeys)
-    // console.log(selectedRows.value)
-}
+const logEvent = (e) => console.log(employees)
 
-const logEvent = (eventName) => {
-    console.log('eventName', eventName)
+const onSelectionChanged = (e) => {
+    selectedRows.value = e.selectedRowKeys
+    console.log('onSelectionChanged', e.selectedRowKeys)
+    console.log(selectedRows.value)
 }
 </script>
