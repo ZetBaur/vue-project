@@ -93,16 +93,30 @@
         @option-changed="handlePropertyChange"
     >
         <DxColumn data-field="id" data-type="number" />
-        <DxColumn data-field="actor_id" data-type="number" />
-        <DxColumn data-field="category_id" data-type="number" />
-        <DxColumn data-field="client" data-type="string" />
-        <DxColumn data-field="client_city_id" data-type="number" />
-        <DxColumn data-field="client_name" data-type="string" />
+        <DxColumn
+            data-field="conditions_ml.ru"
+            data-type="number"
+            width="200"
+        />
+        <DxColumn
+            data-field="description_ml.ru"
+            data-type="number"
+            width="200"
+        />
+        <DxColumn
+            data-field="short_conditions_ml.ru"
+            data-type="string"
+            width="200"
+        />
+        <DxColumn
+            data-field="short_description_ml.ru"
+            data-type="number"
+            width="200"
+        />
+
+        <DxColumn data-field="title_ml.ru" data-type="string" />
         <DxColumn data-field="dt_created" data-type="date" />
-        <DxColumn data-field="dt_updated" data-type="date" />
-        <DxColumn data-field="client_phone" data-type="string" />
-        <DxColumn data-field="description" data-type="string" />
-        <DxColumn data-field="status" data-type="string" />
+        <DxColumn data-field="dt_end" data-type="date" />
 
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
@@ -134,7 +148,7 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
@@ -153,21 +167,14 @@ import {
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
-onMounted(() => console.log('mounted'))
+const dataSource = ref(null)
 
 let pageSize = ref(10)
 let pageIndex = ref(0)
 
-const dataSource = ref(null)
-
-// --- filter ---------
-
 const cardInput = ref(null)
 const phoneInput = ref(null)
 const dateInput = ref(null)
-
-// try {
-// } catch (error) {}
 
 const store = new CustomStore({
     key: 'id',
@@ -179,17 +186,13 @@ const store = new CustomStore({
             date: new Date()
         }
 
-        // console.log('params', params)
-
         try {
             const { data } = await Axios.get(
-                'manager-api/v2/contactCenter/requests/page',
+                'manager-api/v2/campaign/campaigns/page',
                 {
                     params: params
                 }
             )
-
-            // console.log('data', data)
 
             const info = {
                 data: data.content,

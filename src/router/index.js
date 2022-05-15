@@ -16,7 +16,6 @@ const router = createRouter({
         {
             path: '/about',
             name: 'about',
-
             component: () => import('../views/AboutView.vue'),
             meta: {
                 layout: 'main',
@@ -26,7 +25,6 @@ const router = createRouter({
         {
             path: '/datagrid',
             name: 'datagrid',
-
             component: () => import('@/templates/datagrid/datagrid.vue'),
             meta: {
                 layout: 'main',
@@ -36,7 +34,6 @@ const router = createRouter({
         {
             path: '/master-detail',
             name: 'master-detail',
-
             component: () =>
                 import('@/templates/master-detail/master-detail.vue'),
             meta: {
@@ -47,7 +44,6 @@ const router = createRouter({
         {
             path: '/master-detail-2',
             name: 'master-detail-2',
-
             component: () =>
                 import('@/templates/master-detail-copy/master-detail-2.vue'),
             meta: {
@@ -58,35 +54,52 @@ const router = createRouter({
         {
             path: '/bigdata',
             name: 'bigdata',
-
             component: () => import('@/templates/bigdata/bigdata.vue'),
             meta: {
                 layout: 'main',
                 auth: false
             }
         },
-
         {
-            path: '/test-bigdata',
-            name: 'test-bigdata',
-
-            component: () => import('@/templates/bigdata/test-bigdata.vue'),
+            path: '/bigdata-client',
+            name: 'bigdata-client',
+            component: () => import('@/templates/bigdata/bigdata-client.vue'),
             meta: {
                 layout: 'main',
                 auth: false
             }
         },
         {
-            path: '/test-bigdata-client',
-            name: 'test-bigdata-client',
-
-            component: () =>
-                import('@/templates/bigdata/test-bigdata-client.vue'),
+            path: '/bigdata-dx-load',
+            name: 'bigdata-dx-load',
+            component: () => import('@/templates/bigdata/bigdata-dx-load.vue'),
             meta: {
                 layout: 'main',
                 auth: false
             }
-        }
+        },
+        {
+            path: '/bigdata-native',
+            name: 'bigdata-native',
+            component: () => import('@/templates/bigdata/bigdata-native.vue'),
+            meta: {
+                layout: 'main',
+                auth: false
+            }
+        },
+        {
+            path: '/bigdata',
+            name: 'bigdata',
+            component: () => import('@/templates/bigdata/bigdata-native.vue'),
+            meta: {
+                layout: 'main',
+                auth: false
+            }
+        },
+      
+      
+
+      
     ]
 })
 

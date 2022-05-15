@@ -97,68 +97,17 @@ onMounted(async () => {
     try {
         loading.value = true
 
-        const { data } = await Axios.get(
-            'manager-api/v2//segment/segment/list'
-            // {
-            //     params: params
-            // }
-        )
+        const { data } = await Axios.get('manager-api/v2//segment/segment/list')
 
         loading.value = false
 
         console.log('rrrrr', data)
 
         dataSource.value = data
-
-        // const info = {
-        //     data: data.content,
-        //     totalCount: data.totalElements
-        //     // summary: r.data.summary,
-        //     // groupCount: r.data.groupCount
-        // }
-
-        // return info
     } catch (error) {
         console.log(error)
     }
 })
-
-// const store = new CustomStore({
-//     key: 'id',
-//     async load() {
-//         let params = {
-//             page: pageIndex.value + 1,
-//             size: pageSize.value,
-//             sort: 'id,desc',
-//             date: new Date()
-//         }
-
-//         // console.log('params', params)
-
-//         try {
-//             const { data } = await Axios.get(
-//                 'manager-api/v2/campaign/campaigns/page',
-//                 {
-//                     params: params
-//                 }
-//             )
-
-//             console.log('rrrrr', data)
-
-//             const info = {
-//                 data: data.content,
-//                 totalCount: data.totalElements
-//                 // summary: r.data.summary,
-//                 // groupCount: r.data.groupCount
-//             }
-
-//             return info
-//         } catch (error) {
-//             console.log(error)
-//         }
-//     }
-// })
-// dataSource.value = store
 
 const selectedRows = ref([])
 
