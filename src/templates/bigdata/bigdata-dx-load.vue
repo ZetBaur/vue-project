@@ -6,7 +6,7 @@
                     label-mode="floating"
                     label="Тип обращения"
                     :show-clear-button="true"
-                    v-model="cardInput"
+                    v-model="filter.cardInput"
                 />
             </div>
 
@@ -15,7 +15,7 @@
                     label-mode="floating"
                     label="Статус"
                     :show-clear-button="true"
-                    v-model="cardInput"
+                    v-model="filter.cardInput"
                 />
             </div>
 
@@ -24,7 +24,7 @@
                     label-mode="floating"
                     label="Филиал"
                     :show-clear-button="true"
-                    v-model="cardInput"
+                    v-model="filter.cardInput"
                 />
             </div>
 
@@ -33,7 +33,7 @@
                     label-mode="floating"
                     label="Город"
                     :show-clear-button="true"
-                    v-model="cardInput"
+                    v-model="filter.cardInput"
                 />
             </div>
 
@@ -42,7 +42,7 @@
                     label-mode="floating"
                     label="ID"
                     :show-clear-button="true"
-                    v-model="cardInput"
+                    v-model="filter.cardInput"
                 />
             </div>
 
@@ -52,7 +52,7 @@
                     label="Номер телефона"
                     :mask-rules="{ X: /[02-9]/ }"
                     mask="+7 (000) 000-0000"
-                    v-model="phoneInput"
+                    v-model="filter.phoneInput"
                 />
             </div>
 
@@ -63,7 +63,7 @@
                     picker-type="rollers"
                     label-mode="floating"
                     label="Дата"
-                    v-model="dateInput"
+                    v-model="filter.dateInput"
                 />
             </div>
         </div>
@@ -148,7 +148,7 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { ref } from 'vue'
+import { ref, reactive } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
@@ -172,9 +172,11 @@ const dataSource = ref(null)
 let pageSize = ref(10)
 let pageIndex = ref(0)
 
-const cardInput = ref(null)
-const phoneInput = ref(null)
-const dateInput = ref(null)
+const filter = reactive({
+    cardInput: null,
+    phoneInput: null,
+    dateInput: null
+})
 
 const store = new CustomStore({
     key: 'id',
@@ -210,6 +212,8 @@ const store = new CustomStore({
 
 dataSource.value = store
 
+// ----------  Selects -----------------------
+
 const selectedRows = ref([])
 
 const onSelectionChanged = (e) => {
@@ -217,8 +221,16 @@ const onSelectionChanged = (e) => {
     console.log('onSelectionChanged', e.selectedRowKeys)
     console.log(selectedRows.value)
 }
+
+// ---------- Events ----------------------
+
 const logEvent = (e) => console.log(employees)
+
+// --------------------------------
+
 const handlePropertyChange = (e) => {
     // console.log('handlePropertyChange', e)
 }
+
+// --------------------------------
 </script>
