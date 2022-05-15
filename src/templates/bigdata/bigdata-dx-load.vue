@@ -159,7 +159,7 @@ import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
 import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
-
+import notify from 'devextreme/ui/notify'
 import {
     DxDataGrid,
     DxColumn,
@@ -203,16 +203,31 @@ const store = new CustomStore({
                     params: params
                 }
             )
-
             const info = {
                 data: data.content,
                 totalCount: data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             }
-
             loading.value = false
-
+            notify(
+                {
+                    message: `The button was clicked`,
+                    width: 300,
+                    // height: 100,
+                    // shading: false,
+                    closeOnOutsideClick: true,
+                    // hideOnParentScroll: true,
+                    // position: "center center",
+                    position: {
+                        at: 'top right',
+                        my: 'top right',
+                        offset: '-50 50'
+                    }
+                },
+                'success',
+                121500
+            )
             return info
         } catch (error) {
             console.log(error)
