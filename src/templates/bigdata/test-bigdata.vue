@@ -134,7 +134,7 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
@@ -153,7 +153,9 @@ import {
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
-let pageSize = ref(30)
+onMounted(() => console.log('mounted'))
+
+let pageSize = ref(10)
 let pageIndex = ref(0)
 
 const dataSource = ref(null)
@@ -163,6 +165,9 @@ const dataSource = ref(null)
 const cardInput = ref(null)
 const phoneInput = ref(null)
 const dateInput = ref(null)
+
+// try {
+// } catch (error) {}
 
 const store = new CustomStore({
     key: 'id',
@@ -174,7 +179,7 @@ const store = new CustomStore({
             date: new Date()
         }
 
-        console.log('params', params)
+        // console.log('params', params)
 
         try {
             const { data } = await Axios.get(
@@ -184,7 +189,7 @@ const store = new CustomStore({
                 }
             )
 
-            console.log('data', data)
+            // console.log('data', data)
 
             const info = {
                 data: data.content,
