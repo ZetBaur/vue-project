@@ -1,10 +1,16 @@
 <template>
+    <DxLoadIndicator
+        v-if="loading"
+        id="large-indicator"
+        :height="60"
+        :width="60"
+    />
     <div class="actions-header">
         <div class="actions-filter">
             <div class="dx-field">
                 <DxTextBox
                     label-mode="floating"
-                    label="Тип обращения"
+                    label="Карта"
                     :show-clear-button="true"
                     v-model="filter.cardInput"
                 />
@@ -152,6 +158,7 @@ import { ref, reactive } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
+import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
 
 import {
     DxDataGrid,
@@ -167,9 +174,9 @@ import {
 } from 'devextreme-vue/data-grid'
 import CustomStore from 'devextreme/data/custom_store'
 
+const loading = ref(false)
 const dataSource = ref(null)
-
-let pageSize = ref(10)
+let pageSize = ref(20)
 let pageIndex = ref(0)
 
 const filter = reactive({
@@ -189,6 +196,7 @@ const store = new CustomStore({
         }
 
         try {
+            loading.value = true
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
@@ -202,6 +210,8 @@ const store = new CustomStore({
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             }
+
+            loading.value = false
 
             return info
         } catch (error) {
