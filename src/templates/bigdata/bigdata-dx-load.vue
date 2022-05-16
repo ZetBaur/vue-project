@@ -176,7 +176,7 @@ import CustomStore from 'devextreme/data/custom_store'
 
 const loading = ref(false)
 const dataSource = ref(null)
-let pageSize = ref(20)
+let pageSize = ref(30)
 let pageIndex = ref(0)
 
 const filter = reactive({
@@ -203,12 +203,16 @@ const store = new CustomStore({
                     params: params
                 }
             )
+
             const info = {
                 data: data.content,
                 totalCount: data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             }
+
+            console.log('info', info)
+
             loading.value = false
             notify(
                 {
