@@ -179,10 +179,6 @@ const dataSource = ref(null)
 let pageSize = ref(20)
 let pageIndex = ref(0)
 
-onMounted(() => {
-    console.log('mounted')
-})
-
 const filter = reactive({
     cardInput: null,
     phoneInput: null,
@@ -200,8 +196,6 @@ const store = new CustomStore({
         }
 
         try {
-            console.log('request')
-
             loading.value = true
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
