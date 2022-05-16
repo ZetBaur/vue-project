@@ -22,6 +22,7 @@
 </template>
 
 <script setup>
+import Axios from '@/axios/reqAxios'
 import { useLoginStore } from '@/stores/login-store'
 import DxLoadIndicator from 'devextreme-vue/load-indicator'
 import DxTextBox from 'devextreme-vue/text-box'
@@ -46,15 +47,24 @@ const onSubmit = async () => {
         if (!formData.login) {
             throw new Error('Укажите Login')
         }
+
         if (!formData.password) {
             throw new Error('Укажите пароль')
         }
         loading.value = true
-        const res = await loginStore.login(formData)
-        router.push('/bigdata-dx-load')
+
+        await loginStore.login(formData)
+
+        console.log('loggedIn', loginStore.loggedIn)
+
+        console.log(localStorage.getItem('token'))
+
+        router.push('/')
+
         loading.value = false
     } catch (error) {
         loading.value = false
+
         notify(
             {
                 message: error.message,
@@ -70,7 +80,10 @@ const onSubmit = async () => {
             121500
         )
 
-        if (error.response && error.response.status === 400) {
+        if (
+            error.response &&
+            (error.response.status === 400 || error.response.status === 401)
+        ) {
             notify(
                 {
                     message: 'Не верные Login или пароль',
@@ -85,6 +98,7 @@ const onSubmit = async () => {
                 'error',
                 121500
             )
+
             formData.login = ''
             formData.password = ''
         }

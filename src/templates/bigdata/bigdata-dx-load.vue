@@ -154,7 +154,7 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { ref, reactive } from 'vue'
+import { ref, reactive, onMounted } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
@@ -179,6 +179,10 @@ const dataSource = ref(null)
 let pageSize = ref(20)
 let pageIndex = ref(0)
 
+onMounted(() => {
+    console.log('mounted')
+})
+
 const filter = reactive({
     cardInput: null,
     phoneInput: null,
@@ -196,6 +200,8 @@ const store = new CustomStore({
         }
 
         try {
+            console.log('request')
+
             loading.value = true
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
@@ -217,8 +223,8 @@ const store = new CustomStore({
                     // height: 100,
                     // shading: false,
                     closeOnOutsideClick: true,
-                    // hideOnParentScroll: true,
-                    // position: "center center",
+                    hideOnParentScroll: true,
+                    // position: 'center center'
                     position: {
                         at: 'top right',
                         my: 'top right',
@@ -230,6 +236,8 @@ const store = new CustomStore({
             )
             return info
         } catch (error) {
+            loading.value = false
+
             console.log(error)
         }
     }
