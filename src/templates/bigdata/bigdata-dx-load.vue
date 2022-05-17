@@ -1,10 +1,10 @@
 <template>
-    <DxLoadIndicator
+    <!-- <DxLoadIndicator
         v-if="loading"
         id="large-indicator"
         :height="60"
         :width="60"
-    />
+    /> -->
     <div class="actions-header">
         <div class="actions-filter">
             <div class="dx-field">
@@ -88,6 +88,7 @@
         </div>
     </div>
     <DxDataGrid
+        :key="dataGridKey"
         :data-source="dataSource"
         :show-borders="true"
         :remote-operations="true"
@@ -154,11 +155,11 @@
 
 <script setup>
 import Axios from '../../axios/reqAxios'
-import { ref, reactive, onMounted } from 'vue'
+import { ref, reactive } from 'vue'
 import DxTextBox from 'devextreme-vue/text-box'
 import DxDateBox from 'devextreme-vue/date-box'
 import { DxButton } from 'devextreme-vue/button'
-import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
+// import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
 import notify from 'devextreme/ui/notify'
 import {
     DxDataGrid,
@@ -175,15 +176,26 @@ import {
 import CustomStore from 'devextreme/data/custom_store'
 
 const loading = ref(false)
-const dataSource = ref(null)
-let pageSize = ref(30)
+let pageSize = ref(10)
 let pageIndex = ref(0)
+
+// ----------- filter inputs ---------------------------------
 
 const filter = reactive({
     cardInput: null,
     phoneInput: null,
     dateInput: null
 })
+
+// ------------ table ------------------------------
+
+const dataGridKey = ref(0)
+
+const forceRerender = () => {
+    dataGridKey.value += 1
+}
+
+const dataSource = ref(null)
 
 const store = new CustomStore({
     key: 'id',
@@ -196,7 +208,7 @@ const store = new CustomStore({
         }
 
         try {
-            loading.value = true
+            // loading.value = true
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
@@ -211,9 +223,7 @@ const store = new CustomStore({
                 // groupCount: r.data.groupCount
             }
 
-            console.log('info', info)
-
-            loading.value = false
+            // loading.value = false
             notify(
                 {
                     message: `The button was clicked`,
@@ -234,7 +244,7 @@ const store = new CustomStore({
             )
             return info
         } catch (error) {
-            loading.value = false
+            // loading.value = false
 
             console.log(error)
         }
@@ -260,6 +270,7 @@ const logEvent = (e) => console.log(employees)
 // --------------------------------
 
 const handlePropertyChange = (e) => {
+    forceRerender()
     // console.log('handlePropertyChange', e)
 }
 
