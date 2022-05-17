@@ -1,10 +1,4 @@
 <template>
-    <!-- <DxLoadIndicator
-        v-if="loading"
-        id="large-indicator"
-        :height="60"
-        :width="60"
-    /> -->
     <div class="actions-header">
         <div class="actions-filter">
             <div class="dx-field">
@@ -54,8 +48,7 @@
 
             <div class="dx-field">
                 <DxTextBox
-                    label-mode="floating"
-                    label="Номер телефона"
+                    :show-clear-button="true"
                     :mask-rules="{ X: /[02-9]/ }"
                     mask="+7 (000) 000-0000"
                     v-model="filter.phoneInput"
@@ -154,13 +147,12 @@
 </template>
 
 <script setup>
-import Axios from '../../axios/reqAxios'
-import { ref, reactive } from 'vue'
-import DxTextBox from 'devextreme-vue/text-box'
-import DxDateBox from 'devextreme-vue/date-box'
-import { DxButton } from 'devextreme-vue/button'
-// import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
-import notify from 'devextreme/ui/notify'
+import Axios from '../../axios/reqAxios';
+import { ref, reactive } from 'vue';
+import DxTextBox from 'devextreme-vue/text-box';
+import DxDateBox from 'devextreme-vue/date-box';
+import { DxButton } from 'devextreme-vue/button';
+import notify from 'devextreme/ui/notify';
 import {
     DxDataGrid,
     DxColumn,
@@ -172,12 +164,12 @@ import {
     DxSorting,
     DxToolbar,
     DxItem
-} from 'devextreme-vue/data-grid'
-import CustomStore from 'devextreme/data/custom_store'
+} from 'devextreme-vue/data-grid';
+import CustomStore from 'devextreme/data/custom_store';
 
-const loading = ref(false)
-let pageSize = ref(10)
-let pageIndex = ref(0)
+const loading = ref(false);
+let pageSize = ref(10);
+let pageIndex = ref(0);
 
 // ----------- filter inputs ---------------------------------
 
@@ -185,18 +177,13 @@ const filter = reactive({
     cardInput: null,
     phoneInput: null,
     dateInput: null
-})
+});
 
 // ------------ table ------------------------------
 
-const dataGridKey = ref(0)
-
-const forceRerender = () => {
-    dataGridKey.value += 1
-}
-
-const dataSource = ref(null)
-
+const dataGridKey = ref(0);
+const forceRerender = () => (dataGridKey.value += 1);
+const dataSource = ref(null);
 const store = new CustomStore({
     key: 'id',
     async load() {
@@ -205,25 +192,20 @@ const store = new CustomStore({
             size: pageSize.value,
             sort: 'id,desc',
             date: new Date()
-        }
-
+        };
         try {
-            // loading.value = true
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
                     params: params
                 }
-            )
-
+            );
             const info = {
                 data: data.content,
                 totalCount: data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
-            }
-
-            // loading.value = false
+            };
             notify(
                 {
                     message: `The button was clicked`,
@@ -241,38 +223,37 @@ const store = new CustomStore({
                 },
                 'success',
                 121500
-            )
-            return info
+            );
+            return info;
         } catch (error) {
-            // loading.value = false
-
-            console.log(error)
+            console.log(error);
         }
     }
-})
+});
 
-dataSource.value = store
+dataSource.value = store;
 
 // ----------  Selects -----------------------
 
-const selectedRows = ref([])
-
+const selectedRows = ref([]);
 const onSelectionChanged = (e) => {
-    selectedRows.value = e.selectedRowKeys
-    console.log('onSelectionChanged', e.selectedRowKeys)
-    console.log(selectedRows.value)
-}
+    selectedRows.value = e.selectedRowKeys;
+    console.log('onSelectionChanged', e.selectedRowKeys);
+    console.log(selectedRows.value);
+};
 
 // ---------- Events ----------------------
 
-const logEvent = (e) => console.log(employees)
+const logEvent = (e) => console.log(employees);
 
 // --------------------------------
 
 const handlePropertyChange = (e) => {
-    forceRerender()
-    // console.log('handlePropertyChange', e)
-}
+    if (e.fullName === 'paging.pageSize') {
+        forceRerender();
+    }
+    // console.log('handlePropertyChange', e);
+};
 
 // --------------------------------
 </script>

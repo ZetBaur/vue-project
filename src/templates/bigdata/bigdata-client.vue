@@ -56,9 +56,9 @@
 </template>
 
 <script setup>
-import Axios from '../../axios/reqAxios'
-import { DxLoadIndicator } from 'devextreme-vue/load-indicator'
-import { onMounted, ref } from 'vue'
+import Axios from '../../axios/reqAxios';
+import { DxLoadIndicator } from 'devextreme-vue/load-indicator';
+import { onMounted, ref } from 'vue';
 import {
     DxDataGrid,
     DxColumn,
@@ -69,22 +69,22 @@ import {
     DxExport,
     DxColumnChooser,
     DxSorting
-} from 'devextreme-vue/data-grid'
+} from 'devextreme-vue/data-grid';
 
-const loading = ref(false)
+const loading = ref(false);
 
-let pageSize = ref(10)
-let pageIndex = ref(0)
+let pageSize = ref(10);
+let pageIndex = ref(0);
 
 const changePageSize = (value) => {
-    pageSize.value = value
-}
+    pageSize.value = value;
+};
 
 const handlePropertyChange = (e) => {
     // console.log('handlePropertyChange', e)
-}
+};
 
-const dataSource = ref(null)
+const dataSource = ref(null);
 
 onMounted(async () => {
     let params = {
@@ -92,29 +92,31 @@ onMounted(async () => {
         size: pageSize.value,
         sort: 'id,desc',
         date: new Date()
-    }
+    };
 
     try {
-        loading.value = true
+        loading.value = true;
 
-        const { data } = await Axios.get('manager-api/v2//segment/segment/list')
+        const { data } = await Axios.get(
+            'manager-api/v2//segment/segment/list'
+        );
 
-        loading.value = false
+        loading.value = false;
 
-        console.log('rrrrr', data)
+        console.log('rrrrr', data);
 
-        dataSource.value = data
+        dataSource.value = data;
     } catch (error) {
-        console.log(error)
+        console.log(error);
     }
-})
+});
 
-const selectedRows = ref([])
+const selectedRows = ref([]);
 
 const onSelectionChanged = (e) => {
-    selectedRows.value = e.selectedRowKeys
-    console.log('onSelectionChanged', e.selectedRowKeys)
-    console.log(selectedRows.value)
-}
-const logEvent = (e) => console.log(employees)
+    selectedRows.value = e.selectedRowKeys;
+    console.log('onSelectionChanged', e.selectedRowKeys);
+    console.log(selectedRows.value);
+};
+const logEvent = (e) => console.log(employees);
 </script>
