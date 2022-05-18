@@ -139,9 +139,9 @@
         <!-- ----------------------------------- -->
 
         <DxToolbar>
+            <DxItem location="before" name="addRowButton" />
             <DxItem location="before" name="exportButton" />
             <DxItem location="before" name="columnChooserButton" />
-            <DxItem location="before" name="addRowButton" />
         </DxToolbar>
 
         <DxColumnChooser :enabled="true" />
@@ -161,7 +161,8 @@ import {
     DxExport,
     DxStateStoring,
     DxToolbar,
-    DxColumnChooser
+    DxColumnChooser,
+    DxItem
 } from 'devextreme-vue/data-grid';
 import { DxLoadIndicator } from 'devextreme-vue/load-indicator';
 
