@@ -92,31 +92,47 @@
         @selection-changed="onSelectionChanged"
         @option-changed="handlePropertyChange"
     >
-        <DxColumn data-field="id" data-type="number" />
+        <DxColumn data-field="id" data-type="number" caption="ID" />
         <DxColumn
+            caption="Условия"
             data-field="conditions_ml.ru"
             data-type="number"
             width="200"
         />
         <DxColumn
+            caption="Описание"
             data-field="description_ml.ru"
             data-type="number"
             width="200"
         />
         <DxColumn
+            caption="Описание"
             data-field="short_conditions_ml.ru"
             data-type="string"
             width="200"
         />
         <DxColumn
+            caption="Короткое описание"
             data-field="short_description_ml.ru"
             data-type="number"
             width="200"
         />
 
-        <DxColumn data-field="title_ml.ru" data-type="string" />
-        <DxColumn data-field="dt_created" data-type="date" />
-        <DxColumn data-field="dt_end" data-type="date" />
+        <DxColumn
+            caption="Название"
+            data-field="title_ml.ru"
+            data-type="string"
+        />
+        <DxColumn
+            caption="Дата создания"
+            data-field="dt_created"
+            data-type="date"
+        />
+        <DxColumn
+            caption="Дата изменения"
+            data-field="dt_end"
+            data-type="date"
+        />
 
         <DxExport :enabled="true" :allow-export-selected-data="true" />
 
