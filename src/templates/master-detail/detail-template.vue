@@ -151,12 +151,12 @@
 </template>
 
 <script>
-import DxSelectBox from 'devextreme-vue/select-box'
-import DxCheckBox from 'devextreme-vue/check-box'
-import DxTextBox from 'devextreme-vue/text-box'
-import DxDateBox from 'devextreme-vue/date-box'
-import DxButton from 'devextreme-vue/button'
-import DxValidationSummary from 'devextreme-vue/validation-summary'
+import DxSelectBox from 'devextreme-vue/select-box';
+import DxCheckBox from 'devextreme-vue/check-box';
+import DxTextBox from 'devextreme-vue/text-box';
+import DxDateBox from 'devextreme-vue/date-box';
+import DxButton from 'devextreme-vue/button';
+import DxValidationSummary from 'devextreme-vue/validation-summary';
 import {
     DxValidator,
     DxRequiredRule,
@@ -166,21 +166,22 @@ import {
     DxStringLengthRule,
     DxRangeRule
     // DxAsyncRule,
-} from 'devextreme-vue/validator'
+} from 'devextreme-vue/validator';
 
-import notify from 'devextreme/ui/notify'
-import service from './data.js'
+import notify from 'devextreme/ui/notify';
+import service from './data.js';
 
 const sendRequest = function (value) {
-    const validEmail = 'test@dx-email.com'
+    const validEmail = 'test@dx-email.com';
     return new Promise((resolve) => {
         setTimeout(() => {
-            resolve(value === validEmail)
-        }, 1000)
-    })
-}
+            resolve(value === validEmail);
+        }, 1000);
+    });
+};
 
 export default {
+    props: ['template-data'],
     components: {
         DxSelectBox,
         DxCheckBox,
@@ -198,7 +199,7 @@ export default {
         DxValidationSummary
     },
     data() {
-        const currentDate = new Date()
+        const currentDate = new Date();
         return {
             countries: service.getCountries(),
             phoneRules: {
@@ -210,17 +211,17 @@ export default {
             maxDate: new Date(
                 currentDate.setFullYear(currentDate.getFullYear() - 21)
             )
-        }
+        };
     },
     methods: {
         passwordComparison() {
-            return this.password
+            return this.password;
         },
         checkComparison() {
-            return true
+            return true;
         },
         asyncValidation(params) {
-            return sendRequest(params.value)
+            return sendRequest(params.value);
         },
         onFormSubmit(e) {
             notify(
@@ -233,12 +234,12 @@ export default {
                 },
                 'success',
                 3000
-            )
+            );
 
-            e.preventDefault()
+            e.preventDefault();
         }
     }
-}
+};
 </script>
 <style>
 /* .dx-texteditor-input {

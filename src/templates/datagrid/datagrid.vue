@@ -1,4 +1,10 @@
 <template>
+    <DxLoadIndicator
+        v-if="loading"
+        id="large-indicator"
+        :height="60"
+        :width="60"
+    />
     <div class="actions-header">
         <DxButton
             type="danger"
@@ -131,6 +137,14 @@
         </DxColumn>
 
         <!-- ----------------------------------- -->
+
+        <DxToolbar>
+            <DxItem location="before" name="exportButton" />
+            <DxItem location="before" name="columnChooserButton" />
+            <DxItem location="before" name="addRowButton" />
+        </DxToolbar>
+
+        <DxColumnChooser :enabled="true" />
     </DxDataGrid>
 </template>
 
@@ -145,28 +159,34 @@ import {
     DxSelection,
     DxFilterRow,
     DxExport,
-    DxStateStoring
-} from 'devextreme-vue/data-grid'
-import { DxButton } from 'devextreme-vue/button'
+    DxStateStoring,
+    DxToolbar,
+    DxColumnChooser
+} from 'devextreme-vue/data-grid';
+import { DxLoadIndicator } from 'devextreme-vue/load-indicator';
 
-import { employees, states } from './data.js'
-import { ref } from 'vue'
+import { DxButton } from 'devextreme-vue/button';
 
-const dataSource = ref(employees)
-let selectedRows = ref([])
+import { employees, states } from './data.js';
+import { ref } from 'vue';
+
+const loading = ref(false);
+
+const dataSource = ref(employees);
+let selectedRows = ref([]);
 
 const logEvent = (eventName) => {
-    console.log(eventName)
-}
+    console.log(eventName);
+};
 
 const onSelectionChanged = (e) => {
-    console.log(e)
-    selectedRows.value = e.selectedRowKeys
-    console.log(e.selectedRowKeys)
-    console.log(selectedRows.value)
-}
+    console.log(e);
+    selectedRows.value = e.selectedRowKeys;
+    console.log(e.selectedRowKeys);
+    console.log(selectedRows.value);
+};
 
-const onExporting = () => console.log('click')
+const onExporting = () => console.log('click');
 </script>
 
 <style lang="scss">

@@ -1,6 +1,6 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
-import login from '@/views/login.vue'
+import { createRouter, createWebHistory } from 'vue-router';
+import HomeView from '../views/HomeView.vue';
+import login from '@/views/login.vue';
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,24 +61,7 @@ const router = createRouter({
                 auth: false
             }
         },
-        {
-            path: '/bigdata',
-            name: 'bigdata',
-            component: () => import('@/templates/bigdata/bigdata.vue'),
-            meta: {
-                layout: 'main',
-                auth: false
-            }
-        },
-        {
-            path: '/bigdata-client',
-            name: 'bigdata-client',
-            component: () => import('@/templates/bigdata/bigdata-client.vue'),
-            meta: {
-                layout: 'main',
-                auth: false
-            }
-        },
+
         {
             path: '/bigdata-dx-load',
             name: 'bigdata-dx-load',
@@ -88,15 +71,7 @@ const router = createRouter({
                 auth: false
             }
         },
-        {
-            path: '/bigdata-native',
-            name: 'bigdata-native',
-            component: () => import('@/templates/bigdata/bigdata-native.vue'),
-            meta: {
-                layout: 'main',
-                auth: false
-            }
-        },
+
         {
             path: '/bigdata',
             name: 'bigdata',
@@ -107,6 +82,6 @@ const router = createRouter({
             }
         }
     ]
-})
+});
 
-export default router
+export default router;

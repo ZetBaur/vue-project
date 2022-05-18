@@ -48,6 +48,8 @@
 
             <div class="dx-field">
                 <DxTextBox
+                    label-mode="floating"
+                    label="Телефон"
                     :show-clear-button="true"
                     :mask-rules="{ X: /[02-9]/ }"
                     mask="+7 (000) 000-0000"
