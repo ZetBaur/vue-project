@@ -1,21 +1,20 @@
-import axios from 'axios'
-// import router from "@/router";
+import axios from 'axios';
 
 const requestAxios = axios.create({
     headers: {
         Authorization: localStorage.getItem('token'),
         'Content-Type': 'application/json'
     }
-})
+});
 
 // ----------------------------------------
 
-// requestAxios.interceptors.response.use(null, error => {
-//   if (error.response.status === 401) {
-//     router.push("/login-form");
-//   }
-//   return Promise.reject(error);
-// });
+requestAxios.interceptors.response.use(null, (error) => {
+    if (error.response.status === 401) {
+        router.push('/login-form');
+    }
+    return Promise.reject(error);
+});
 
 // ----------------------------------------
 
@@ -32,4 +31,4 @@ const requestAxios = axios.create({
 //     (error) => Promise.reject(error)
 // )
 
-export default requestAxios
+export default requestAxios;

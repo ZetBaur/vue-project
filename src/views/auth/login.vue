@@ -22,7 +22,6 @@
 </template>
 
 <script setup>
-import Axios from '@/axios/reqAxios';
 import { useLoginStore } from '@/stores/auth/login-store';
 import DxLoadIndicator from 'devextreme-vue/load-indicator';
 import DxTextBox from 'devextreme-vue/text-box';
