@@ -29,27 +29,21 @@ import DxTextBox from 'devextreme-vue/text-box';
 import DxButton from 'devextreme-vue/button';
 import notify from 'devextreme/ui/notify';
 import { reactive, ref } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
+import { useRouter } from 'vue-router';
 
-const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
+const loginStore = useLoginStore();
 
 const formData = reactive({
     login: '',
     password: ''
 });
 
-const loginStore = useLoginStore();
-
 const onSubmit = async () => {
     try {
-        if (!formData.login) {
-            throw new Error('Укажите Login');
-        }
-        if (!formData.password) {
-            throw new Error('Укажите пароль');
-        }
+        if (!formData.login) throw new Error('Укажите Login');
+        if (!formData.password) throw new Error('Укажите пароль');
         loading.value = true;
         await loginStore.login(formData);
         router.push('/');
