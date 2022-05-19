@@ -22,49 +22,40 @@
 </template>
 
 <script setup>
-import Axios from '@/axios/reqAxios'
-import { useLoginStore } from '@/stores/login-store'
-import DxLoadIndicator from 'devextreme-vue/load-indicator'
-import DxTextBox from 'devextreme-vue/text-box'
-import DxButton from 'devextreme-vue/button'
-import notify from 'devextreme/ui/notify'
-import { reactive, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import Axios from '@/axios/reqAxios';
+import { useLoginStore } from '@/stores/auth/login-store';
+import DxLoadIndicator from 'devextreme-vue/load-indicator';
+import DxTextBox from 'devextreme-vue/text-box';
+import DxButton from 'devextreme-vue/button';
+import notify from 'devextreme/ui/notify';
+import { reactive, ref } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-const route = useRoute()
-const router = useRouter()
-const loading = ref(false)
+const route = useRoute();
+const router = useRouter();
+const loading = ref(false);
 
 const formData = reactive({
     login: '',
     password: ''
-})
+});
 
-const loginStore = useLoginStore()
+const loginStore = useLoginStore();
 
 const onSubmit = async () => {
     try {
         if (!formData.login) {
-            throw new Error('Укажите Login')
+            throw new Error('Укажите Login');
         }
-
         if (!formData.password) {
-            throw new Error('Укажите пароль')
+            throw new Error('Укажите пароль');
         }
-        loading.value = true
-
-        await loginStore.login(formData)
-
-        console.log('loggedIn', loginStore.loggedIn)
-
-        console.log(localStorage.getItem('token'))
-
-        router.push('/')
-
-        loading.value = false
+        loading.value = true;
+        await loginStore.login(formData);
+        router.push('/');
+        loading.value = false;
     } catch (error) {
-        loading.value = false
-
+        loading.value = false;
         notify(
             {
                 message: error.message,
@@ -78,7 +69,7 @@ const onSubmit = async () => {
             },
             'error',
             121500
-        )
+        );
 
         if (
             error.response &&
@@ -97,13 +88,12 @@ const onSubmit = async () => {
                 },
                 'error',
                 121500
-            )
-
-            formData.login = ''
-            formData.password = ''
+            );
+            formData.login = '';
+            formData.password = '';
         }
     }
-}
+};
 </script>
 
 <style lang="scss">
