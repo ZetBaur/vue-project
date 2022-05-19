@@ -161,6 +161,12 @@
             <DxItem location="before" name="exportButton" />
             <DxItem location="before" name="columnChooserButton" />
         </DxToolbar>
+
+        <DxMasterDetail :enabled="true" template="masterDetailTemplate" />
+
+        <template #masterDetailTemplate="{ data }">
+            <DetailsTemplate :template-data="data" />
+        </template>
     </DxDataGrid>
 </template>
 
@@ -181,8 +187,10 @@ import {
     DxColumnChooser,
     DxSorting,
     DxToolbar,
-    DxItem
+    DxItem,
+    DxMasterDetail
 } from 'devextreme-vue/data-grid';
+import DetailsTemplate from './details-template.vue';
 import CustomStore from 'devextreme/data/custom_store';
 
 const loading = ref(false);
