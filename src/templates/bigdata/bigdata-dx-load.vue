@@ -142,7 +142,7 @@
 
         <DxPager
             :show-page-size-selector="true"
-            :allowed-page-sizes="[10, 20, 30]"
+            :allowed-page-sizes="[10, 20, 30, 50]"
             :show-navigation-buttons="true"
             :show-info="true"
         />
@@ -194,7 +194,7 @@ import DetailsTemplate from './details-template.vue';
 import CustomStore from 'devextreme/data/custom_store';
 
 const loading = ref(false);
-let pageSize = ref(10);
+let pageSize = ref(20);
 let pageIndex = ref(0);
 
 // ----------- filter inputs ---------------------------------
