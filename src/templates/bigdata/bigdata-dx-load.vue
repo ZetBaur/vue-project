@@ -292,16 +292,44 @@ const handlePropertyChange = (e) => {
     }
     console.log('handlePropertyChange', e);
 
-    if (e.fullName === 'columns[6].sortOrder') {
-        sort.value = e.value === 'asc' ? 'dt_created, desc' : 'dt_created, asc';
-    }
-
     if (e.fullName === 'columns[0].sortOrder') {
         sort.value = e.value === 'asc' ? 'id, desc' : 'id, asc';
     }
 
+    if (e.fullName === 'columns[1].sortOrder') {
+        sort.value =
+            e.value === 'asc' ? 'conditions_ml, desc' : 'conditions_ml, asc';
+    }
+
+    if (e.fullName === 'columns[2].sortOrder') {
+        sort.value =
+            e.value === 'asc' ? 'description_ml, desc' : 'description_ml, asc';
+    }
+
+    if (e.fullName === 'columns[3].sortOrder') {
+        sort.value =
+            e.value === 'asc'
+                ? 'short_conditions_ml, desc'
+                : 'short_conditions_ml, asc';
+    }
+
+    if (e.fullName === 'columns[4].sortOrder') {
+        sort.value =
+            e.value === 'asc'
+                ? 'short_description_ml, desc'
+                : 'short_description_ml, asc';
+    }
+
     if (e.fullName === 'columns[5].sortOrder') {
         sort.value = e.value === 'asc' ? 'title_ml, desc' : 'title_ml, asc';
+    }
+
+    if (e.fullName === 'columns[6].sortOrder') {
+        sort.value = e.value === 'asc' ? 'dt_created, desc' : 'dt_created, asc';
+    }
+
+    if (e.fullName === 'columns[6].sortOrder') {
+        sort.value = e.value === 'asc' ? 'dt_end, desc' : 'dt_end, asc';
     }
 };
 
