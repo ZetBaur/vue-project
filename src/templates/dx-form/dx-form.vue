@@ -62,7 +62,7 @@
         <DxDateBox
             invalid-date-message="The date must have the following format: MM/dd/yyyy"
             picker-type="rollers"
-            placeholder='Выберите дату'
+            placeholder="Выберите дату"
         >
             <DxValidator>
                 <DxRequiredRule message="Date of birth is required" />

@@ -82,7 +82,7 @@
             />
         </div>
     </div>
-    
+
     <DxDataGrid
         :key="dataGridKey"
         :data-source="dataSource"
@@ -171,6 +171,8 @@
 
         <DxMasterDetail :enabled="true" template="masterDetailTemplate" />
 
+        <DxSorting mode="multiple" />
+
         <template #masterDetailTemplate="{ data }">
             <DetailsTemplate :template-data="data" />
         </template>
@@ -203,6 +205,7 @@ import CustomStore from 'devextreme/data/custom_store';
 const loading = ref(false);
 let pageSize = ref(20);
 let pageIndex = ref(0);
+let sort = ref('id,desc');
 
 // ----------- filter inputs ---------------------------------
 
@@ -223,10 +226,12 @@ const store = new CustomStore({
         let params = {
             page: pageIndex.value + 1,
             size: pageSize.value,
-            sort: 'id,desc',
+            sort: sort.value,
             date: new Date()
         };
         try {
+            console.log(params);
+
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
@@ -285,7 +290,19 @@ const handlePropertyChange = (e) => {
     if (e.fullName === 'paging.pageSize') {
         forceRerender();
     }
-    // console.log('handlePropertyChange', e);
+    console.log('handlePropertyChange', e);
+
+    if (e.fullName === 'columns[6].sortOrder') {
+        sort.value = e.value === 'asc' ? 'dt_created, desc' : 'dt_created, asc';
+    }
+
+    if (e.fullName === 'columns[0].sortOrder') {
+        sort.value = e.value === 'asc' ? 'id, desc' : 'id, asc';
+    }
+
+    if (e.fullName === 'columns[5].sortOrder') {
+        sort.value = e.value === 'asc' ? 'title_ml, desc' : 'title_ml, asc';
+    }
 };
 
 // --------------------------------
