@@ -203,7 +203,7 @@ import DetailsTemplate from './details-template.vue';
 import CustomStore from 'devextreme/data/custom_store';
 
 const loading = ref(false);
-let pageSize = ref(20);
+let pageSize = ref(10);
 let pageIndex = ref(0);
 let sort = ref('id,desc');
 
@@ -230,8 +230,6 @@ const store = new CustomStore({
             date: new Date()
         };
         try {
-            console.log(params);
-
             const { data } = await Axios.get(
                 'manager-api/v2/campaign/campaigns/page',
                 {
