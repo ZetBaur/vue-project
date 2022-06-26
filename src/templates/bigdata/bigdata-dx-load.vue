@@ -6,7 +6,7 @@
                     label-mode="floating"
                     label="Карта"
                     :show-clear-button="true"
-                    v-model="filter.cardInput"
+                    v-model="filterForm.cardInput"
                 />
             </div>
 
@@ -15,7 +15,7 @@
                     label-mode="floating"
                     label="Статус"
                     :show-clear-button="true"
-                    v-model="filter.cardInput"
+                    v-model="filterForm.cardInput"
                 />
             </div>
 
@@ -24,7 +24,7 @@
                     label-mode="floating"
                     label="Филиал"
                     :show-clear-button="true"
-                    v-model="filter.cardInput"
+                    v-model="filterForm.cardInput"
                 />
             </div>
 
@@ -33,7 +33,7 @@
                     label-mode="floating"
                     label="Город"
                     :show-clear-button="true"
-                    v-model="filter.cardInput"
+                    v-model="filterForm.cardInput"
                 />
             </div>
 
@@ -42,7 +42,7 @@
                     label-mode="floating"
                     label="ID"
                     :show-clear-button="true"
-                    v-model="filter.cardInput"
+                    v-model="filterForm.cardInput"
                 />
             </div>
 
@@ -53,7 +53,7 @@
                     :show-clear-button="true"
                     :mask-rules="{ X: /[02-9]/ }"
                     mask="+7 (000) 000-0000"
-                    v-model="filter.phoneInput"
+                    v-model="filterForm.phoneInput"
                 />
             </div>
 
@@ -64,7 +64,7 @@
                     picker-type="rollers"
                     label-mode="floating"
                     label="Дата"
-                    v-model="filter.dateInput"
+                    v-model="filterForm.dateInput"
                 />
             </div>
         </div>
@@ -162,8 +162,6 @@
 
         <DxColumnChooser :enabled="true" />
 
-        <DxSorting mode="none" />
-
         <DxToolbar>
             <DxItem location="before" name="exportButton" />
             <DxItem location="before" name="columnChooserButton" />
@@ -203,13 +201,20 @@ import DetailsTemplate from './details-template.vue';
 import CustomStore from 'devextreme/data/custom_store';
 
 const loading = ref(false);
+
+// let pageData = ref({
+//     pageSize: 10,
+//     pageIndex: 0,
+//     sort: 'id,desc'
+// });
+
 let pageSize = ref(10);
 let pageIndex = ref(0);
 let sort = ref('id,desc');
 
 // ----------- filter inputs ---------------------------------
 
-const filter = reactive({
+const filterForm = reactive({
     cardInput: null,
     phoneInput: null,
     dateInput: null
@@ -272,6 +277,7 @@ dataSource.value = store;
 // ----------  Selects -----------------------
 
 const selectedRows = ref([]);
+
 const onSelectionChanged = (e) => {
     selectedRows.value = e.selectedRowKeys;
     console.log('onSelectionChanged', e.selectedRowKeys);
@@ -288,8 +294,12 @@ const handlePropertyChange = (e) => {
     if (e.fullName === 'paging.pageSize') {
         forceRerender();
     }
-    console.log('handlePropertyChange', e);
+    // console.log('handlePropertyChange', e);
 
+    handleSort(e);
+};
+
+const handleSort = (e) => {
     if (e.fullName === 'columns[0].sortOrder') {
         sort.value = e.value === 'asc' ? 'id, desc' : 'id, asc';
     }
