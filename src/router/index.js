@@ -2,8 +2,8 @@ import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import login from '@/views/auth/login.vue';
 
-const router = createRouter( {
-    history: createWebHistory( import.meta.env.BASE_URL ),
+const router = createRouter({
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: '/login',
@@ -26,7 +26,7 @@ const router = createRouter( {
         {
             path: '/about',
             name: 'about',
-            component: () => import( '../views/AboutView.vue' ),
+            component: () => import('../views/AboutView.vue'),
             meta: {
                 layout: 'main',
                 auth: false
@@ -36,7 +36,7 @@ const router = createRouter( {
         {
             path: '/bigdata-dx-load',
             name: 'bigdata-dx-load',
-            component: () => import( '@/templates/bigdata/bigdata-dx-load.vue' ),
+            component: () => import('@/templates/bigdata/bigdata-dx-load.vue'),
             meta: {
                 layout: 'main',
                 auth: false
@@ -46,13 +46,23 @@ const router = createRouter( {
         {
             path: '/dx-form',
             name: 'dx-form',
-            component: () => import( '@/templates/dx-form/dx-form.vue' ),
+            component: () => import('@/templates/dx-form/dx-form.vue'),
+            meta: {
+                layout: 'main',
+                auth: false
+            }
+        },
+
+        {
+            path: '/form-editing',
+            name: 'FormEditing',
+            component: () => import('@/templates/formEditing/FormEditing.vue'),
             meta: {
                 layout: 'main',
                 auth: false
             }
         }
     ]
-} );
+});
 
 export default router;
