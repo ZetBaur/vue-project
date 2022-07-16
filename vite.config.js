@@ -3,11 +3,11 @@ import { fileURLToPath, URL } from 'url';
 import { defineConfig, loadEnv } from 'vite';
 import vue from '@vitejs/plugin-vue';
 
-const proxyTarget = 'http://172.16.11.197';
+// const proxyTarget = 'http://172.16.11.197';
 
 // const proxyTarget = 'http://172.16.10.215';
 
-// const proxyTarget = 'http://10.70.6.9';
+const proxyTarget = 'http://10.70.6.9';
 
 export default defineConfig(({ command, mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -29,41 +29,29 @@ export default defineConfig(({ command, mode }) => {
 
                 proxy: {
                     '/storage': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
                         changeOrigin: true,
                         logLevel: 'debug'
                     },
                     '/manager-api': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
                         changeOrigin: true,
                         logLevel: 'debug'
                     },
                     '/report': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
-
+                        target: proxyTarget,
                         changeOrigin: true,
-
                         rewrite: (path) => path.replace(/^\/report/, 'report')
                     },
                     '/manager': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
                         rewrite: (path) => path.replace(/^\/manager/, 'manager')
                     },
                     '/campaigns': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -71,9 +59,7 @@ export default defineConfig(({ command, mode }) => {
                             path.replace(/^\/campaigns/, 'campaigns')
                     },
                     '/loyalty-segment': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -84,9 +70,7 @@ export default defineConfig(({ command, mode }) => {
                             )
                     },
                     '/profile-segment': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -97,9 +81,7 @@ export default defineConfig(({ command, mode }) => {
                             )
                     },
                     '/magnum-client': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -107,9 +89,7 @@ export default defineConfig(({ command, mode }) => {
                             path.replace(/^\/magnum-client/, 'magnum-client')
                     },
                     '/frauds': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
                         // pathRewrite: {
@@ -138,41 +118,32 @@ export default defineConfig(({ command, mode }) => {
 
                 proxy: {
                     '/storage': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
+
                         changeOrigin: true,
                         logLevel: 'debug'
                     },
                     '/manager-api': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
                         changeOrigin: true,
                         logLevel: 'debug'
                     },
                     '/report': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
                         rewrite: (path) => path.replace(/^\/report/, 'report')
                     },
                     '/manager': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
                         rewrite: (path) => path.replace(/^\/manager/, 'manager')
                     },
                     '/campaigns': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -180,9 +151,7 @@ export default defineConfig(({ command, mode }) => {
                             path.replace(/^\/campaigns/, 'campaigns')
                     },
                     '/loyalty-segment': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -193,9 +162,7 @@ export default defineConfig(({ command, mode }) => {
                             )
                     },
                     '/profile-segment': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -206,9 +173,7 @@ export default defineConfig(({ command, mode }) => {
                             )
                     },
                     '/magnum-client': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
 
@@ -216,9 +181,7 @@ export default defineConfig(({ command, mode }) => {
                             path.replace(/^\/magnum-client/, 'magnum-client')
                     },
                     '/frauds': {
-                        // target: "http://172.16.10.215",
-                        target: 'http://172.16.11.197',
-                        // target: 'http://10.70.6.9',
+                        target: proxyTarget,
 
                         changeOrigin: true,
                         // pathRewrite: {
