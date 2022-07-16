@@ -123,6 +123,15 @@ let pageSize = ref(10);
 let pageIndex = ref(0);
 let sort = ref('id,desc');
 
+const get = async () => {
+    const { data } = await Axios.get(
+        'manager-api/v2/promotion/discounts/page',
+        { params: params }
+    );
+
+    console.log(data);
+};
+
 // ------------ table ------------------------------
 
 const dataGridKey = ref(0);
@@ -135,37 +144,37 @@ const store = new CustomStore({
             page: pageIndex.value + 1,
             size: pageSize.value,
             sort: sort.value,
-            date: new Date()
+            show_all: true,
+            type_id: null
         };
         try {
             const { data } = await Axios.get(
-                'manager-api/v2/campaign/campaigns/page',
-                {
-                    params: params
-                }
+                process.env.VUE_APP_API_URL +
+                    'manager-api/v2/promotion/discounts/page',
+                { params }
             );
 
             const info = {
-                data: data.content,
-                totalCount: data.totalElements
+                data: data.content
+                // totalCount: data.totalElements
                 // summary: r.data.summary,
                 // groupCount: r.data.groupCount
             };
 
             notify(
                 {
-                    message: `The button was clicked`,
+                    message: `notify`,
                     width: 300,
                     // height: 100,
                     // shading: false,
                     closeOnOutsideClick: true,
-                    hideOnParentScroll: true,
+                    hideOnParentScroll: true
                     // position: 'center center'
-                    position: {
-                        at: 'top right',
-                        my: 'top right',
-                        offset: '-50 50'
-                    }
+                    // position: {
+                    //     at: 'top right',
+                    //     my: 'top right',
+                    //     offset: '-50 50'
+                    // }
                 },
                 'success',
                 121500
