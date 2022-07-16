@@ -224,6 +224,7 @@ const filterForm = reactive({
 
 const dataGridKey = ref(0);
 const forceRerender = () => (dataGridKey.value += 1);
+
 const dataSource = ref(null);
 const store = new CustomStore({
     key: 'id',
